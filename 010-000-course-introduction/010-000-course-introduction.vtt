@@ -1,0 +1,85 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:11.000
+Hey everyone, and welcome to the Service Mesh with Istio course.
+
+2
+00:00:11.000 --> 00:00:15.000
+I'm Sevi Karaköse, and I'll be your instructor for this course.
+
+3
+00:00:15.000 --> 00:00:20.000
+I've worked as a software developer and then a team leader for many years.
+
+4
+00:00:20.000 --> 00:00:27.000
+I've also done technical trainings, worked with development and infrastructure teams on DevOps transformation,
+
+5
+00:00:27.000 --> 00:00:33.000
+and also designed team activities for organizations to be more adaptive to change.
+
+6
+00:00:33.000 --> 00:00:46.000
+Now, as a cloud native engineer, I work with development teams on their legacy applications for microservices transformation and cloud modernization.
+
+7
+00:00:46.000 --> 00:00:52.000
+In this course, we will learn Istio through some lectures and many hands-on labs.
+
+8
+00:00:52.000 --> 00:01:00.000
+We'll start from the basics of Istio and learn step-by-step with examples and hands-on labs.
+
+9
+00:01:00.000 --> 00:01:09.000
+By the end of this course, you will have an extensive understanding of how to configure and manage your Service Mesh with Istio.
+
+10
+00:01:09.000 --> 00:01:12.000
+Let's look at the objectives of the course.
+
+11
+00:01:12.000 --> 00:01:15.000
+First, we start with an introduction to Istio.
+
+12
+00:01:15.000 --> 00:01:23.000
+We learn about monoliths and microservices and why we need Service Mesh through example-driven lectures.
+
+13
+00:01:23.000 --> 00:01:26.000
+We then get introduced to Istio.
+
+14
+00:01:26.000 --> 00:01:30.000
+We learn how to install Istio and configure it.
+
+15
+00:01:30.000 --> 00:01:36.000
+And we finally look at how to visualize our application and services with Kiali.
+
+16
+00:01:37.000 --> 00:01:53.000
+We then drill into Istio concepts such as Gateways, Virtual Services, Destination Rules, subsets, Timeouts, Retries, Circuit Breaking, Fault Injection, Request Routing, A/B Testing, etc.
+
+17
+00:01:53.000 --> 00:02:01.000
+Next, we look at the security aspects such as certificate management, authentication, and authorization.
+
+18
+00:02:01.000 --> 00:02:09.000
+And finally, we look at observability such as viewing and collecting metrics with Prometheus and Grafana.
+
+19
+00:02:09.000 --> 00:02:12.000
+We then look at K8s in a bit more detail.
+
+20
+00:02:12.000 --> 00:02:15.000
+And finally, distributed tracing.
+
+21
+00:02:15.000 --> 00:02:20.000
+I am super excited to take you through this journey, so let us begin.

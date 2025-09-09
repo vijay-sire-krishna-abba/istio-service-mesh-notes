@@ -1,0 +1,105 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:08.000
+During the course of this training, we will be mentioning Sidecars a lot,
+
+2
+00:00:08.000 --> 00:00:13.000
+so let's quickly brush up on what those are.
+
+3
+00:00:13.000 --> 00:00:18.000
+Have you seen the small passenger cabins attached to the motorcycles?
+
+4
+00:00:18.000 --> 00:00:21.000
+They're called Sidecars.
+
+5
+00:00:21.000 --> 00:00:27.000
+Ah, I always dreamt of traveling inside one of them when I was a kid.
+
+6
+00:00:27.000 --> 00:00:34.000
+In the Kubernetes world, we know containers are encapsulated into Pods.
+
+7
+00:00:34.000 --> 00:00:39.000
+Each pod can have one or more containers.
+
+8
+00:00:39.000 --> 00:00:43.000
+The additional containers that support the main container
+
+9
+00:00:43.000 --> 00:00:49.000
+are called sidecars or sidecar containers.
+
+10
+00:00:49.000 --> 00:00:53.000
+They share the same volume and network,
+
+11
+00:00:53.000 --> 00:00:57.000
+but they have different responsibilities.
+
+12
+00:00:57.000 --> 00:01:03.000
+Sidecars are responsible for log shipping, monitoring,
+
+13
+00:01:03.000 --> 00:01:07.000
+file loading, or in our case, proxying,
+
+14
+00:01:07.000 --> 00:01:11.000
+and they're relatively small in size.
+
+15
+00:01:11.000 --> 00:01:15.000
+Our main container handles the business logic,
+
+16
+00:01:15.000 --> 00:01:20.000
+a functionality that adds value to our application.
+
+17
+00:01:20.000 --> 00:01:28.000
+Sidecars help in isolating these functionalities from our business logic.
+
+18
+00:01:28.000 --> 00:01:33.000
+Here's a sample pod definition file for a sidecar container.
+
+19
+00:01:33.000 --> 00:01:37.000
+Under containers section, first we have an Nginx container,
+
+20
+00:01:37.000 --> 00:01:40.000
+which uses the Nginx image.
+
+21
+00:01:40.000 --> 00:01:42.000
+Then we have a second container,
+
+22
+00:01:42.000 --> 00:01:44.000
+created with a Fluentd image,
+
+23
+00:01:44.000 --> 00:01:46.000
+which is our sidecar container
+
+24
+00:01:46.000 --> 00:01:52.000
+responsible for shipping logs of the main application to a central server.
+
+25
+00:01:52.000 --> 00:01:55.000
+So, that's a sidecar container.
+
+26
+00:01:55.000 --> 00:01:58.000
+Next, we will talk about Envoy.

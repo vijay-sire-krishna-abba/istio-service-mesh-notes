@@ -1,0 +1,77 @@
+WEBVTT
+
+1
+00:00:00.960 --> 00:00:03.520
+In this lecture, we will talk about Kiali.
+
+2
+00:00:05.760 --> 00:00:10.400
+Once you have many microservices, it is important to observe them
+
+3
+00:00:10.400 --> 00:00:14.480
+and check them to make sure they are available as you configured them.
+
+4
+00:00:16.080 --> 00:00:20.240
+Kiali is a very common and powerful add-on used with Istio.
+
+5
+00:00:21.200 --> 00:00:23.520
+It has a web-based graphical interface.
+
+6
+00:00:24.480 --> 00:00:30.400
+It is a very helpful and fun tool for visualizing and managing the service mesh.
+
+7
+00:00:31.920 --> 00:00:35.840
+For now, we will go over a high-level overview
+
+8
+00:00:35.840 --> 00:00:40.959
+as it will help us visualize everything we will learn in the initial chapters.
+
+9
+00:00:42.959 --> 00:00:48.560
+Later on, we will go into details of Kiali in the Observability chapter.
+
+10
+00:00:48.560 --> 00:00:57.680
+Kiali is used for observing connections and microservices of Istio service mesh
+
+11
+00:00:57.680 --> 00:01:01.520
+and also for defining and validating them.
+
+12
+00:01:03.360 --> 00:01:06.639
+It visualizes the service mesh topology
+
+13
+00:01:06.639 --> 00:01:11.839
+and provides visibility into features like request routing,
+
+14
+00:01:11.839 --> 00:01:16.559
+circuit breaking, request rates, latency, and more.
+
+15
+00:01:16.879 --> 00:01:21.599
+Kiali also offers wizards to apply common traffic patterns
+
+16
+00:01:21.599 --> 00:01:25.199
+and automatically generates Istio configuration.
+
+17
+00:01:27.279 --> 00:01:32.080
+After we install Kiali, we will also generate some test traffic
+
+18
+00:01:32.080 --> 00:01:35.440
+to make sure we can see it on the Kiali dashboard.
+
+19
+00:01:36.879 --> 00:01:42.959
+Let's dive in and see how to install the add-on and view the Kiali dashboard.

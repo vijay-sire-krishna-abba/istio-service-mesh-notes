@@ -1,0 +1,21 @@
+WEBVTT
+
+1
+00:00:00.320 --> 00:00:05.520
+In this section, you're going to learn how to manage traffic in your Istio service mesh.
+
+2
+00:00:06.960 --> 00:00:12.560
+And the most powerful part of it is that you'll do it without changing your application code.
+
+3
+00:00:13.840 --> 00:00:21.440
+First, we will talk about the core components such as Gateways, Virtual Services, and Destination
+
+4
+00:00:21.440 --> 00:00:29.440
+Rules. Then we'll jump into the traffic management concepts like subsets, Timeouts,
+
+5
+00:00:29.440 --> 00:00:36.799
+Retries, Circuit Breaking, Fault Injection, Request Routing, and A/B Testing.

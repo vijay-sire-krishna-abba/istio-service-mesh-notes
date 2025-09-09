@@ -1,0 +1,165 @@
+WEBVTT
+
+1
+00:00:00.560 --> 00:00:05.840
+Now let's install Kiali on our cluster so we can visualize our service mesh.
+
+2
+00:00:07.280 --> 00:00:13.200
+Let's use this command to install and see all the add-ons that are provided in the samples folder.
+
+3
+00:00:14.400 --> 00:00:18.799
+We will talk about more of these tools in the observability chapter again.
+
+4
+00:00:20.799 --> 00:00:27.120
+As you can see, Grafana has its service account and a set of config maps and deployments,
+
+5
+00:00:28.000 --> 00:00:34.240
+and Jaeger is also installed from the add-ons, and we will talk about it in the upcoming chapters.
+
+6
+00:00:35.360 --> 00:00:40.480
+Then there is a large group of objects that has come with Kiali installation.
+
+7
+00:00:41.759 --> 00:00:45.599
+Then at the very end, you can see Prometheus also installed.
+
+8
+00:00:46.480 --> 00:00:52.639
+An important note is that these add-ons are not tuned for performance and security.
+
+9
+00:00:53.599 --> 00:00:56.240
+These are meant for only demo purposes.
+
+10
+00:00:57.840 --> 00:01:01.680
+So, let's check the status of our Kiali deployment.
+
+11
+00:01:06.400 --> 00:01:09.199
+Yes, it has been rolled out successfully.
+
+12
+00:01:12.080 --> 00:01:15.680
+And let's verify if the Kiali service is running.
+
+13
+00:01:17.360 --> 00:01:21.680
+You can use this command if you need to check if Kiali is running or not.
+
+14
+00:01:22.720 --> 00:01:23.680
+On your cluster.
+
+15
+00:01:26.320 --> 00:01:30.720
+And now with this command, we can start Kiali dashboard.
+
+16
+00:01:32.160 --> 00:01:35.680
+It will start a browser and land on the overview page.
+
+17
+00:01:38.559 --> 00:01:44.800
+In the address bar, you can see it is being served on the port 20001.
+
+18
+00:01:46.000 --> 00:01:50.160
+On the left menu, you can see different levels of visualizing your mesh.
+
+19
+00:01:50.879 --> 00:01:55.519
+And on the top left, you can change the type of filter that you can use.
+
+20
+00:01:56.720 --> 00:02:02.160
+On the far right, you can filter your whole mesh by time intervals.
+
+21
+00:02:02.800 --> 00:02:07.839
+And next to it, you can change how often you need your data to be refreshed.
+
+22
+00:02:09.360 --> 00:02:13.039
+Now, here are all the namespaces in our service mesh.
+
+23
+00:02:13.759 --> 00:02:15.360
+You should be able to see all that.
+
+24
+00:02:15.839 --> 00:02:19.279
+When you click this number next to the applications,
+
+25
+00:02:19.279 --> 00:02:24.000
+it will take you to the applications page, which is also accessible from the left.
+
+26
+00:02:24.800 --> 00:02:28.000
+Here you will find our four applications from Bookinfo.
+
+27
+00:02:29.199 --> 00:02:32.960
+You can always jump to some other namespace to see what's going on there.
+
+28
+00:02:34.559 --> 00:02:36.800
+If you go to the workloads from the menu,
+
+29
+00:02:37.440 --> 00:02:41.440
+you will see all our different deployments listed as workloads.
+
+30
+00:02:41.600 --> 00:02:44.000
+Now, let's check services.
+
+31
+00:02:45.039 --> 00:02:47.199
+There are no services, which is weird.
+
+32
+00:02:47.759 --> 00:02:51.839
+Sometimes it takes a while to load all the Service Mesh applications and objects.
+
+33
+00:02:55.440 --> 00:02:56.880
+Yes, they are here now.
+
+34
+00:02:59.279 --> 00:03:03.520
+And when we go to the Istio config menu, we will see nothing
+
+35
+00:03:03.520 --> 00:03:07.279
+because we actually don't have any Istio configurations for this name.
+
+36
+00:03:07.440 --> 00:03:11.039
+And the last bit, but a very powerful tool,
+
+37
+00:03:11.039 --> 00:03:14.720
+is the graph menu, where we'll have most of the fun.
+
+38
+00:03:15.919 --> 00:03:19.679
+We see this is also empty because there's no traffic right now.
+
+39
+00:03:21.839 --> 00:03:25.279
+Now, let's start creating some traffic to visualize here.
+
+40
+00:03:29.839 --> 00:03:31.520
+And here we have our traffic.
+
+41
+00:03:31.520 --> 00:03:35.279
+And here we have our traffic to visualize here.

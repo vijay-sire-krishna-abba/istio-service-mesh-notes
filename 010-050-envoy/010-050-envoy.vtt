@@ -1,0 +1,77 @@
+WEBVTT
+
+1
+00:00:00.640 --> 00:00:06.960
+When you get into the Service Mesh world, Envoy is one of the most common proxies you'll hear about.
+
+2
+00:00:07.760 --> 00:00:14.560
+So, let's have a look at it now. Envoy is a proxy, but what is a proxy?
+
+3
+00:00:16.080 --> 00:00:23.360
+Let's forget about containers and Kubernetes for a second and talk about a user trying to connect
+
+4
+00:00:23.360 --> 00:00:30.879
+to an application. The application currently has its business logic, that is, whatever the
+
+5
+00:00:30.879 --> 00:00:39.360
+application does, and at the same time, also does other things, such as securing connection using
+
+6
+00:00:39.360 --> 00:00:48.880
+TLS encryption, or authentication, or retrying requests if it is not able to serve the user, etc.
+
+7
+00:00:49.840 --> 00:00:58.799
+These will need to be coded into the application. What if all of these extra functionalities could
+
+8
+00:00:58.799 --> 00:01:08.320
+be outsourced into a separate service, so that the developers could focus solely on developing
+
+9
+00:01:08.320 --> 00:01:18.720
+business logic, which is more fun? That's called a proxy. Now, the user reaches out to the proxy
+
+10
+00:01:18.879 --> 00:01:22.800
+and the proxy forwards the request to the application.
+
+11
+00:01:25.120 --> 00:01:30.879
+Envoy is an open-source proxy designed for modern service-oriented architectures.
+
+12
+00:01:32.559 --> 00:01:40.400
+It was mainly started in the company Lyft in 2015, when they were trying to solve their own
+
+13
+00:01:40.400 --> 00:01:47.680
+microservices problems. So, it was mainly designed for distributed architectures and
+
+14
+00:01:47.680 --> 00:02:01.199
+microservices. In 2017, the project was accepted to CNCF, and in 2018, it reached the graduate
+
+15
+00:02:01.199 --> 00:02:08.800
+level, which means it is battle-tested, ready for production, and has a healthy number of contributors.
+
+16
+00:02:10.399 --> 00:02:19.279
+Envoy is a proxy and communication bus with advanced capabilities. It works as a sidecar
+
+17
+00:02:19.279 --> 00:02:26.559
+next to your containers, just as we described in the last slide, so that the traffic going in
+
+18
+00:02:27.119 --> 00:02:36.399
+and out of our pod is using Envoy as a proxy. Many service mesh implementations use Envoy now,
+
+19
+00:02:36.399 --> 00:02:42.160
+and we will talk about Envoy more in Istio's core architecture.

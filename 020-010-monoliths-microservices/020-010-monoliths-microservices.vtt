@@ -1,0 +1,645 @@
+WEBVTT
+
+1
+00:00:00.880 --> 00:00:07.600
+Before diving into Service Mesh and Istio, I'd like us to have a look at the evolutionary changes
+
+2
+00:00:07.600 --> 00:00:15.760
+in software design in the last two decades. The 2000s started with a breakthrough proposition
+
+3
+00:00:15.760 --> 00:00:21.040
+that would completely change our view of software development. At the time,
+
+4
+00:00:21.040 --> 00:00:28.320
+software development had become very process-oriented and slow. For some industries,
+
+5
+00:00:28.320 --> 00:00:34.799
+like defense and aviation, for example, it took almost 20 years for a project to finish.
+
+6
+00:00:35.599 --> 00:00:41.759
+There was a huge time gap between the software need arising and the software being delivered.
+
+7
+00:00:42.480 --> 00:00:46.480
+Businesses changed before even the software projects got delivered.
+
+8
+00:00:47.599 --> 00:00:54.080
+Many projects had been laid off before even it was finished, and so much money was wasted.
+
+9
+00:00:54.959 --> 00:01:00.000
+Business owners and software professionals both were frustrated.
+
+10
+00:01:01.759 --> 00:01:08.559
+So, in 2001, 17 independent-minded software practitioners got together
+
+11
+00:01:08.559 --> 00:01:16.000
+and published the Agile Manifesto. They told the world that the way people created software
+
+12
+00:01:16.000 --> 00:01:23.279
+had major flaws and needed to change. From the experience they had, they decided to value,
+
+13
+00:01:24.959 --> 00:01:29.040
+individuals and interactions over processes and tools,
+
+14
+00:01:30.720 --> 00:01:34.480
+working software over comprehensive documentation,
+
+15
+00:01:36.239 --> 00:01:45.040
+customer collaboration over contract negotiation, responding to change over following a plan.
+
+16
+00:01:45.440 --> 00:01:53.599
+That is, while there is value in the items on the right, we value the items on the left more.
+
+17
+00:01:56.080 --> 00:02:01.440
+Based on Agile practice, not only do we collaborate with our customers more,
+
+18
+00:02:01.440 --> 00:02:08.080
+but also we evolve our business models and software based on true experimentation.
+
+19
+00:02:08.160 --> 00:02:14.160
+When you are working on one large app, and if something breaks, it breaks entirely.
+
+20
+00:02:15.279 --> 00:02:21.520
+However, if you're changing small portions of your app, things would be more under control.
+
+21
+00:02:22.960 --> 00:02:29.839
+The piece that you're experimenting with might be affected, but the risk will be less than before.
+
+22
+00:02:30.960 --> 00:02:34.160
+So, we started designing our applications to be
+
+23
+00:02:35.039 --> 00:02:38.160
+So, we started designing our applications to be
+
+24
+00:02:38.160 --> 00:02:43.440
+smaller and smaller, so that we can isolate risks during experimentation.
+
+25
+00:02:44.000 --> 00:02:48.320
+At the same time, deploy faster and more frequently.
+
+26
+00:02:50.320 --> 00:02:54.399
+So, the joint systems we have been designing have been becoming
+
+27
+00:02:54.399 --> 00:02:59.039
+one big problem, standing in the way of innovation and agility.
+
+28
+00:03:00.000 --> 00:03:06.000
+We had to take a look at our traditional software architectures and redesign them.
+
+29
+00:03:06.800 --> 00:03:12.880
+The term monolithic is used when all the functionality in an app needs to be deployed
+
+30
+00:03:12.880 --> 00:03:18.960
+at the same time, and there's a unified approach to all the separate functionalities
+
+31
+00:03:18.960 --> 00:03:25.199
+within the monolithic boundaries. All of this functionality almost always
+
+32
+00:03:25.199 --> 00:03:30.240
+shares the same codebase, and it has no clear boundaries between them.
+
+33
+00:03:31.839 --> 00:03:38.880
+These pieces are tightly coupled. All the code could even be working as a single process.
+
+34
+00:03:40.320 --> 00:03:44.160
+There's usually a single database for persistency in this model,
+
+35
+00:03:44.160 --> 00:03:47.119
+which becomes a huge bottleneck at one point.
+
+36
+00:03:48.880 --> 00:03:52.399
+Let's see how a monolith works in a real-life application.
+
+37
+00:03:53.279 --> 00:03:59.440
+Here is our Bookinfo application. We will use this as our example application
+
+38
+00:03:59.440 --> 00:04:04.880
+throughout this course. It consists of four different modules, namely
+
+39
+00:04:05.520 --> 00:04:14.240
+Details, Reviews, Ratings, and Product page. It is a modular application, but still a monolith.
+
+40
+00:04:14.960 --> 00:04:18.959
+All the services depend on a specific version of the other one.
+
+41
+00:04:19.760 --> 00:04:25.359
+You need to deploy the whole package and possibly send some scripts to the database.
+
+42
+00:04:27.760 --> 00:04:32.399
+The Product page shows the book's information, reviews, and ratings.
+
+43
+00:04:33.760 --> 00:04:37.519
+All the data of this application comes from different modules,
+
+44
+00:04:38.239 --> 00:04:42.399
+but they are not separately designed and cannot be scaled.
+
+45
+00:04:42.640 --> 00:04:48.160
+Let's try to understand the dependencies of the modules and the problems of the monoliths
+
+46
+00:04:48.160 --> 00:04:52.480
+Bookinfo. The customer lands on the Product page.
+
+47
+00:04:53.920 --> 00:04:58.559
+Product page gets this information from Reviews and Details modules.
+
+48
+00:05:00.959 --> 00:05:05.440
+Reviews service gathers the number of ratings from Ratings service.
+
+49
+00:05:06.559 --> 00:05:09.760
+They are all written in the same language, Java.
+
+50
+00:05:09.920 --> 00:05:16.239
+Apart from these modules, the application also takes care of networking, authentication,
+
+51
+00:05:17.119 --> 00:05:26.320
+authorization rules, and how data is transferred between modules, logging, monitoring, tracing, etc.
+
+52
+00:05:28.160 --> 00:05:33.200
+Every once in a while, the Ratings module, because of the amount of data it holds,
+
+53
+00:05:33.200 --> 00:05:37.279
+has problems, and this affects the whole system.
+
+54
+00:05:38.239 --> 00:05:45.279
+It is not possible to just scale ratings or leave it out of the system without touching the code
+
+55
+00:05:45.279 --> 00:05:50.959
+and redeploying it. Now, a new campaign module is going to be developed.
+
+56
+00:05:52.079 --> 00:05:56.880
+But this time, a new team is formed for this, and they want to use a different language.
+
+57
+00:05:56.880 --> 00:06:01.679
+Since everything is unified and all the important functionality like authorization
+
+58
+00:06:01.679 --> 00:06:06.160
+lies within the monolith, they have a hard time designing the architecture.
+
+59
+00:06:07.600 --> 00:06:14.000
+And also, our product owners want to try a new version of Reviews with Red Stars for Christmas.
+
+60
+00:06:14.799 --> 00:06:18.559
+They want to test this functionality on a segment of users,
+
+61
+00:06:18.559 --> 00:06:22.079
+and if they like it, we can use it for the whole system.
+
+62
+00:06:22.320 --> 00:06:26.399
+This is a very simple app, with very little functionality,
+
+63
+00:06:26.399 --> 00:06:29.920
+and you can see the problems we are having to tackle already.
+
+64
+00:06:31.119 --> 00:06:35.679
+Now, think of huge applications that have been around for decades and more.
+
+65
+00:06:36.799 --> 00:06:41.920
+There may be hundreds of applications, and you can see the problems we are having to tackle already.
+
+66
+00:06:42.959 --> 00:06:47.359
+But if you want to make it easier for your users to use the app,
+
+67
+00:06:47.359 --> 00:06:50.160
+that has been around for decades and more.
+
+68
+00:06:51.200 --> 00:06:55.119
+There may be hundreds or more developers working on these systems,
+
+69
+00:06:55.760 --> 00:06:58.959
+and starting with some loose rules on architecture,
+
+70
+00:06:59.679 --> 00:07:03.119
+these systems might become a big ball of mud.
+
+71
+00:07:05.359 --> 00:07:09.920
+Big ball of mud is a famous idiom for these types of software systems.
+
+72
+00:07:10.720 --> 00:07:16.880
+Without noticing, your monolith application can go out of hand and become one of those.
+
+73
+00:07:17.679 --> 00:07:24.480
+Let's have a look at how this booking for monolithic application could magically
+
+74
+00:07:24.480 --> 00:07:27.200
+and miraculously turn into microservices.
+
+75
+00:07:29.359 --> 00:07:33.679
+Well, to be honest, it is not an easy task to refactor monoliths,
+
+76
+00:07:34.239 --> 00:07:36.559
+and it's not an overnight transformation.
+
+77
+00:07:37.200 --> 00:07:44.239
+It is a cultural, technical, and organizational effort which paves the way to being cloud native.
+
+78
+00:07:44.480 --> 00:07:47.440
+With the new microservices architecture,
+
+79
+00:07:47.440 --> 00:07:52.320
+each module is now its own independent and separate application.
+
+80
+00:07:54.320 --> 00:07:57.760
+Our product page has been transformed into a Python app.
+
+81
+00:07:58.399 --> 00:08:00.799
+It still functions as our landing page.
+
+82
+00:08:02.320 --> 00:08:06.320
+The book details module has been refactored into a Ruby application.
+
+83
+00:08:07.760 --> 00:08:11.040
+The reviews module has been transformed into a Java app.
+
+84
+00:08:11.600 --> 00:08:19.040
+The ratings module has now been redesigned and implemented in Node.js.
+
+85
+00:08:21.040 --> 00:08:25.119
+Moreover, the reviews app now has multiple versions.
+
+86
+00:08:25.839 --> 00:08:30.880
+Version 1, version 2, and version 3 to test different ideas.
+
+87
+00:08:32.159 --> 00:08:34.239
+Version 1 is a no-star version,
+
+88
+00:08:34.960 --> 00:08:37.280
+version 2 is a black star,
+
+89
+00:08:37.280 --> 00:08:40.159
+and version 3 is a red star version.
+
+90
+00:08:41.119 --> 00:08:44.559
+As before, users land on the product page,
+
+91
+00:08:44.559 --> 00:08:48.159
+which contacts the details and review services
+
+92
+00:08:48.159 --> 00:08:51.599
+to show information regarding various products.
+
+93
+00:08:53.359 --> 00:08:58.000
+So now that we have seen how the monolithic booking application has been
+
+94
+00:08:58.000 --> 00:09:03.520
+transformed into microservices, let's talk about the improvements and wins.
+
+95
+00:09:05.599 --> 00:09:08.559
+The ratings module will not be a problem anymore.
+
+96
+00:09:09.359 --> 00:09:11.760
+Now that it is fully independent,
+
+97
+00:09:11.760 --> 00:09:16.159
+we can scale it up or down depending on the load from our customers.
+
+98
+00:09:17.679 --> 00:09:22.799
+We can now deploy every piece of booking for without interfering with others.
+
+99
+00:09:23.599 --> 00:09:28.559
+It will make our releases smaller, faster, and less risky.
+
+100
+00:09:30.080 --> 00:09:32.320
+With microservices architecture,
+
+101
+00:09:32.320 --> 00:09:35.440
+each service can be written with different languages.
+
+102
+00:09:36.239 --> 00:09:41.200
+So here in our application, we have now four different languages
+
+103
+00:09:41.200 --> 00:09:43.440
+and each team has autonomy.
+
+104
+00:09:44.960 --> 00:09:49.919
+Our services are now isolated from the failure of other services
+
+105
+00:09:49.919 --> 00:09:51.760
+because of the loose coupling.
+
+106
+00:09:52.640 --> 00:09:56.799
+And the end-to-end application will have more resilience
+
+107
+00:09:56.799 --> 00:10:02.559
+since its different parts can be monitored, changed, or rolled back easily.
+
+108
+00:10:03.520 --> 00:10:09.200
+Instead of having one big application, we now have six smaller applications.
+
+109
+00:10:10.000 --> 00:10:14.559
+So hopefully, you won't have to deal with a big ball of mud anymore.
+
+110
+00:10:15.440 --> 00:10:20.799
+In an ideal scenario, a microservice should have a single responsibility.
+
+111
+00:10:22.320 --> 00:10:26.239
+Earlier, when we discussed the monolithic book application,
+
+112
+00:10:26.239 --> 00:10:30.159
+we said that, apart from the four different modules,
+
+113
+00:10:30.239 --> 00:10:36.320
+the application also takes care of networking, authentication, authorization rules,
+
+114
+00:10:36.320 --> 00:10:42.640
+and how data is transferred between modules as well as logging, monitoring, etc.
+
+115
+00:10:44.080 --> 00:10:48.080
+But what happened to these when we moved to the microservices model?
+
+116
+00:10:49.119 --> 00:10:50.719
+Well, they are not there.
+
+117
+00:10:51.679 --> 00:10:55.679
+Our microservices currently do not implement any of these.
+
+118
+00:10:56.400 --> 00:11:00.000
+We could move these into each of our Kubernetes services.
+
+119
+00:11:01.440 --> 00:11:05.919
+So let's add all these functionalities to our microservices.
+
+120
+00:11:08.559 --> 00:11:13.359
+By now, you probably have an idea on where this is going.
+
+121
+00:11:14.320 --> 00:11:20.799
+Every microservice boundary has the same functionality coded again and again into them.
+
+122
+00:11:21.359 --> 00:11:25.599
+Every team has to solve the same issues over and over again,
+
+123
+00:11:26.159 --> 00:11:28.719
+and probably they'll solve them differently.
+
+124
+00:11:30.400 --> 00:11:32.400
+Look at the code application here,
+
+125
+00:11:32.400 --> 00:11:38.080
+and how do you go tell these teams to change a certificate or a monitoring agent version?
+
+126
+00:11:39.919 --> 00:11:43.440
+Any developer developing any of these applications
+
+127
+00:11:43.440 --> 00:11:49.919
+will need to be aware of all of these extra components apart from the core business logic.
+
+128
+00:11:50.960 --> 00:11:53.119
+That microservice is meant to serve.
+
+129
+00:11:54.719 --> 00:12:00.719
+These issues we have to deal with in every microservice are called cross-cutting concerns.
+
+130
+00:12:02.000 --> 00:12:04.400
+When coded into the microservice,
+
+131
+00:12:04.400 --> 00:12:08.000
+they disrupt the main reason we designed the microservices.
+
+132
+00:12:08.799 --> 00:12:12.719
+To be able to have smaller, more independent pieces.
+
+133
+00:12:14.400 --> 00:12:17.679
+This is known as the problem of fat microservices.
+
+134
+00:12:18.080 --> 00:12:21.359
+Microservices are not a piece of cake.
+
+135
+00:12:21.359 --> 00:12:25.599
+They have their own challenges, and they tend to get really complicated.
+
+136
+00:12:27.919 --> 00:12:32.159
+As we just saw in the monolithic version of our application,
+
+137
+00:12:32.159 --> 00:12:38.640
+all aspects such as networking and security were directly coded into the application.
+
+138
+00:12:39.679 --> 00:12:44.880
+But now all those gray areas fabricated into our monolithic application
+
+139
+00:12:45.599 --> 00:12:49.359
+are exposed, and we have to find a way to cover them.
+
+140
+00:12:50.640 --> 00:12:54.719
+How will the product page know which version of reviews to go to?
+
+141
+00:12:56.159 --> 00:12:59.599
+So how will one service know how to find the other one?
+
+142
+00:13:00.559 --> 00:13:02.320
+What are the traffic rules?
+
+143
+00:13:02.320 --> 00:13:03.840
+What are the timeouts?
+
+144
+00:13:05.359 --> 00:13:10.960
+In a very short time, you'll have too many tiny bits of services spread out,
+
+145
+00:13:11.679 --> 00:13:15.119
+and these questions will get much harder to answer.
+
+146
+00:13:16.880 --> 00:13:20.719
+It was much easier to handle the security in our monolith
+
+147
+00:13:20.719 --> 00:13:23.919
+because it provided the proper sheen for us.
+
+148
+00:13:25.119 --> 00:13:29.679
+In our microservices, securing service-to-service communication
+
+149
+00:13:29.679 --> 00:13:34.559
+and end-user-to-service communication can become a problem itself.
+
+150
+00:13:34.559 --> 00:13:40.320
+Now that you have loosely coupled tiny pieces and many abstraction layers,
+
+151
+00:13:40.320 --> 00:13:44.000
+it gets harder to pinpoint a problem in your application.
+
+152
+00:13:45.359 --> 00:13:48.640
+For that, you will need an observability strategy.
+
+153
+00:13:51.119 --> 00:13:55.599
+Just for a small application, we used four different languages.
+
+154
+00:13:56.640 --> 00:13:59.919
+With all those different technologies of microservices,
+
+155
+00:14:00.640 --> 00:14:05.840
+Actually, operations might become a bottleneck for organizations
+
+156
+00:14:05.840 --> 00:14:07.679
+who take on microservices.
+
+157
+00:14:10.159 --> 00:14:13.280
+There's a new approach for that called DevOps,
+
+158
+00:14:13.840 --> 00:14:17.599
+where the development teams work closely with operations,
+
+159
+00:14:17.599 --> 00:14:21.679
+and together, they take the responsibility for the development.
+
+160
+00:14:21.679 --> 00:14:26.400
+In the upcoming lesson, we will look at how service meshes can help
+
+161
+00:14:26.400 --> 00:14:29.440
+solve these challenges with microservices.

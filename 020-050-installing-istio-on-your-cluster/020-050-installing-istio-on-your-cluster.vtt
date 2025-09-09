@@ -1,0 +1,45 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:07.000
+So, in this demo, we'll be installing Istio on our cluster using istioctl.
+
+2
+00:00:08.000 --> 00:00:12.000
+For this, let's use istioctl install command.
+
+3
+00:00:16.000 --> 00:00:21.000
+As we have talked earlier, for demo purposes, we'll use demo profile.
+
+4
+00:00:21.000 --> 00:00:23.000
+Let's run this command now.
+
+5
+00:00:30.000 --> 00:00:44.000
+Once installed, let's use the verify install command to check if everything is installed
+
+6
+00:00:44.000 --> 00:00:46.000
+without any problems.
+
+7
+00:00:46.000 --> 00:00:55.000
+As you can see, now in our cluster there are a bunch of new resources that Istio has added.
+
+8
+00:00:55.000 --> 00:01:01.000
+Some of these are cluster roles, cluster role bindings, custom resource definitions,
+
+9
+00:01:01.000 --> 00:01:07.000
+and three Istio deployments with 13 custom definitions.
+
+10
+00:01:07.000 --> 00:01:12.000
+Our Istio cluster is installed and verified successfully.
+
+11
+00:01:14.000 --> 00:01:16.000
+Let's move on to the next section.

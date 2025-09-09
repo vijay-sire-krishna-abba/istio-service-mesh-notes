@@ -1,0 +1,229 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:05.000
+So, let's try Gateways in a demo.
+
+2
+00:00:05.000 --> 00:00:07.000
+We already have a Gateway configured.
+
+3
+00:00:07.000 --> 00:00:09.000
+Let's check that one first.
+
+4
+00:00:13.000 --> 00:00:18.000
+From the samples folder, we applied this Gateway and it worked.
+
+5
+00:00:18.000 --> 00:00:21.000
+As you can see, there's a wildcard in the host section.
+
+6
+00:00:21.000 --> 00:00:27.000
+But, how do we configure a Gateway with a proper hostname?
+
+7
+00:00:27.000 --> 00:00:32.000
+Before doing that, let's get the product page deployment created again
+
+8
+00:00:32.000 --> 00:00:36.000
+from the bookinfo.yaml to make sure we have all our apps running.
+
+9
+00:00:40.000 --> 00:00:43.000
+And here's our gateway.
+
+10
+00:00:43.000 --> 00:00:45.000
+And I'm going to delete this one.
+
+11
+00:00:51.000 --> 00:00:56.000
+Now, let us create a gateway with a specific hostname.
+
+12
+00:00:56.000 --> 00:00:59.000
+Here is the YAML we can use for that.
+
+13
+00:00:59.000 --> 00:01:03.000
+As you can see, it is using Istio Gateway
+
+14
+00:01:03.000 --> 00:01:08.000
+and allowing traffic from port 80 on HTTP protocol.
+
+15
+00:01:08.000 --> 00:01:13.000
+And it will allow in only the traffic coming to the bookinfo.app host.
+
+16
+00:01:15.000 --> 00:01:17.000
+For this Gateway to take effect,
+
+17
+00:01:17.000 --> 00:01:21.000
+we need to create a Virtual Service to handle incoming traffic.
+
+18
+00:01:22.000 --> 00:01:26.000
+And we'll have Virtual Services demo later on,
+
+19
+00:01:26.000 --> 00:01:29.000
+but it is important to note that hosts need to match
+
+20
+00:01:29.000 --> 00:01:33.000
+with the one in the Gateway and the Virtual Service.
+
+21
+00:01:33.000 --> 00:01:38.000
+So, this Virtual Service is bound to the bookinfo Gateway we just created.
+
+22
+00:01:38.000 --> 00:01:41.000
+In the Virtual Service configuration,
+
+23
+00:01:41.000 --> 00:01:46.000
+there are some match rules and a route rule which we'll cover soon.
+
+24
+00:01:46.000 --> 00:01:49.000
+For this gateway to allow traffic,
+
+25
+00:01:50.000 --> 00:01:55.000
+we need to use bookinfo.app as our host in our request.
+
+26
+00:01:55.000 --> 00:02:03.000
+In curl, we can add the "-H" flag to set HTTP header to bookinfo.app".
+
+27
+00:02:10.000 --> 00:02:12.000
+Yay! It works!
+
+28
+00:02:12.000 --> 00:02:17.000
+Now, our bookinfo application is open to outside traffic
+
+29
+00:02:17.000 --> 00:02:20.000
+using our bookinfo Gateway.
+
+30
+00:02:20.000 --> 00:02:24.000
+Let's check it on Kiali's Istio config section.
+
+31
+00:02:26.000 --> 00:02:32.000
+Here is the Gateway, and you can also change some configuration from Kiali.
+
+32
+00:02:37.000 --> 00:02:40.000
+And here's the Virtual Service we just configured.
+
+33
+00:02:41.000 --> 00:02:45.000
+Let's go to our browser and try this hostname now.
+
+34
+00:02:45.000 --> 00:02:48.000
+And in order to do so,
+
+35
+00:02:48.000 --> 00:02:54.000
+we can add the IP and hostname to our hosts file with this command.
+
+36
+00:02:54.000 --> 00:02:56.000
+Now, let's try it.
+
+37
+00:02:57.000 --> 00:03:03.000
+Here, in my browser, I'll type http://bookinfo.app,
+
+38
+00:03:03.000 --> 00:03:07.000
+colon, my port number, slash, product page.
+
+39
+00:03:07.000 --> 00:03:12.000
+And as you can see, we could go through the Gateway we just configured
+
+40
+00:03:12.000 --> 00:03:15.000
+using the bookinfo.app command.
+
+41
+00:03:15.000 --> 00:03:17.000
+Let's try it.
+
+42
+00:03:18.000 --> 00:03:23.000
+And as you can see, we could go through the Gateway we just configured
+
+43
+00:03:23.000 --> 00:03:26.000
+using the bookinfo.app hostname.
+
+44
+00:03:26.000 --> 00:03:29.000
+Now, I want to go back to the Gateway
+
+45
+00:03:29.000 --> 00:03:33.000
+and change the hostname back to wildcard.
+
+46
+00:03:33.000 --> 00:03:35.000
+Because throughout this training,
+
+47
+00:03:35.000 --> 00:03:38.000
+we might need to go back to default configuration
+
+48
+00:03:38.000 --> 00:03:42.000
+using sample YAMLs to have a fresh start.
+
+49
+00:03:42.000 --> 00:03:44.000
+And as you might remember,
+
+50
+00:03:44.000 --> 00:03:47.000
+we had a wildcard in the hostname.
+
+51
+00:03:47.000 --> 00:03:50.000
+So we'll stick to that format through this training
+
+52
+00:03:50.000 --> 00:03:53.000
+and use IPs instead of the hostname,
+
+53
+00:03:53.000 --> 00:03:56.000
+if there's no specific use for that.
+
+54
+00:03:56.000 --> 00:04:00.000
+Now, we can also revert the hostname in the Virtual Services
+
+55
+00:04:00.000 --> 00:04:03.000
+back to the wildcard as well.
+
+56
+00:04:03.000 --> 00:04:06.000
+Now, we can revert the hostname in the Virtual Service
+
+57
+00:04:06.000 --> 00:04:09.000
+back to the wildcard as well.

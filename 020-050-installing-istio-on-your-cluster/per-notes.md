@@ -1,0 +1,3 @@
+# 020-050-installing-istio-on-your-cluster
+
+ So, in this demo, we'll be installing Istio on our cluster using istioctl. For this, let's use istioctl install command. As we have talked earlier, for demo purposes, we'll use demo profile. Let's run this command now. Once installed, let's use the verify install command to check if everything is installed without any problems. As you can see, now in our cluster there are a bunch of new resources that Istio has added. Some of these are cluster roles, cluster role bindings, custom resource definitions, and three Istio deployments with 13 custom definitions. Our Istio cluster is installed and verified successfully. Let's move on to the next section.

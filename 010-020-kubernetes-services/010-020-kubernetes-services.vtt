@@ -1,0 +1,109 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:06.000
+Let's briefly recap about Kubernetes services.
+
+2
+00:00:06.000 --> 00:00:13.000
+So, pods, as we know, are the smallest deployable units in Kubernetes.
+
+3
+00:00:13.000 --> 00:00:22.000
+If you want to run something on Kubernetes, you need to create a pod and place the application in it.
+
+4
+00:00:22.000 --> 00:00:27.000
+Pods are ephemeral, which means they can be created and terminated.
+
+5
+00:00:27.000 --> 00:00:33.000
+To match the cluster state you declared via deployments.
+
+6
+00:00:33.000 --> 00:00:43.000
+We need our pods to find each other and communicate within the cluster, so our application can work as expected.
+
+7
+00:00:43.000 --> 00:00:54.000
+Pods, however, have their own IPs, which is good, but IPs keep changing because Pods are, well, ephemeral.
+
+8
+00:00:54.000 --> 00:01:01.000
+So, how do I find my application spaces in a cluster and help them communicate?
+
+9
+00:01:01.000 --> 00:01:10.000
+Like, let's say a front-end service talks to a back-end service, while these IPs are changing all the time.
+
+10
+00:01:10.000 --> 00:01:15.000
+This is possible via Kubernetes Services.
+
+11
+00:01:15.000 --> 00:01:21.000
+A back-end service can be created to point to the back-end pods,
+
+12
+00:01:21.000 --> 00:01:30.000
+so that any other application within the cluster can use the service to reach the applications in the back end.
+
+13
+00:01:30.000 --> 00:01:42.000
+The service has its own IP, and so we no longer have to rely on the IPs of the individual pods.
+
+14
+00:01:42.000 --> 00:01:52.000
+Services are an abstraction that determines which pods to connect to and a policy on how to connect them.
+
+15
+00:01:52.000 --> 00:02:02.000
+Pods have labels on them, so that our service can select them in a huge pool of other pods.
+
+16
+00:02:02.000 --> 00:02:12.000
+There are three types of services in Kubernetes – NodePort, ClusterIP, and LoadBalancer.
+
+17
+00:02:12.000 --> 00:02:17.000
+The default type of service is called ClusterIP.
+
+18
+00:02:17.000 --> 00:02:28.000
+This is an internal-only service that is created to enable communication between applications within the cluster.
+
+19
+00:02:28.000 --> 00:02:34.000
+This type of service is only accessible within the cluster.
+
+20
+00:02:34.000 --> 00:02:45.000
+If you'd like to make an application accessible outside of the cluster, then you must create a service of type NodePort.
+
+21
+00:02:45.000 --> 00:02:54.000
+This will make the service accessible on a predefined port on all the nodes in the cluster.
+
+22
+00:02:54.000 --> 00:02:58.000
+The third type is called LoadBalancer.
+
+23
+00:02:58.000 --> 00:03:05.000
+This type of service is only supported with specific cloud providers.
+
+24
+00:03:05.000 --> 00:03:11.000
+This is like NodePort service, but invokes a supported external Load Balancer
+
+25
+00:03:11.000 --> 00:03:21.000
+to create a Load Balancer to the ports the application exposed on the nodes in the clusters.
+
+26
+00:03:21.000 --> 00:03:24.000
+That's a quick recap of services.
+
+27
+00:03:24.000 --> 00:03:32.000
+We talk more about services and how to create them in the Kubernetes for the Beginners course.

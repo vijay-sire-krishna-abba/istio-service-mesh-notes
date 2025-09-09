@@ -1,0 +1,81 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:05.000
+Now, it's time to install Istio on our cluster.
+
+2
+00:00:06.000 --> 00:00:10.000
+There are three different approaches to install Istio.
+
+3
+00:00:11.000 --> 00:00:15.000
+We could install it using the command-line utility Istioctl.
+
+4
+00:00:16.000 --> 00:00:19.000
+We could use an Istio operator to install it.
+
+5
+00:00:20.000 --> 00:00:24.000
+Or, we could use a Helm package for the same installation.
+
+6
+00:00:25.000 --> 00:00:31.000
+For this training, we will use Istioctl for installing Istio on our cluster.
+
+7
+00:00:32.000 --> 00:00:41.000
+To install Istio using Istioctl, run the Istioctl install command and specify a profile.
+
+8
+00:00:42.000 --> 00:00:46.000
+For this installation, we will use a demo profile.
+
+9
+00:00:47.000 --> 00:00:52.000
+There are also different profiles for production and performance testing.
+
+10
+00:00:53.000 --> 00:01:01.000
+We will not use them in our training, but it's important to know that different environments need different profiles.
+
+11
+00:01:02.000 --> 00:01:09.000
+When this command is run, Istio is deployed in the cluster in the form of a deployment named Istiod,
+
+12
+00:01:10.000 --> 00:01:14.000
+in a new namespace known as the Istio system namespace.
+
+13
+00:01:14.000 --> 00:01:23.000
+Istiod, as we discussed earlier, has different components inside it, such as Citadel, Pilot, and Galley.
+
+14
+00:01:25.000 --> 00:01:34.000
+Along with these, it also deploys two other services known as the Istio Egress Gateway and Istio Ingress Gateway,
+
+15
+00:01:35.000 --> 00:01:41.000
+and a bunch of Kubernetes service objects to expose these services within the cluster.
+
+16
+00:01:41.000 --> 00:01:47.000
+We will talk more about these Gateways when we talk about Gateways in a later section.
+
+17
+00:01:49.000 --> 00:01:56.000
+Once installed, run the Istioctl verify-install command to verify the installation.
+
+18
+00:01:57.000 --> 00:01:59.000
+You'll see a huge list of items here.
+
+19
+00:02:00.000 --> 00:02:07.000
+As we talked about earlier, Istio extends Kubernetes, so you can see CRDs here.
+
+20
+00:02:07.000 --> 00:02:10.000
+Let's now see this in action in the upcoming demo.

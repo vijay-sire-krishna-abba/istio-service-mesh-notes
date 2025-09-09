@@ -1,0 +1,76 @@
+# 030-020-virtual-services
+
+
+
+### Subtitles Extracted
+Let us now learn about Virtual Services and Istio.
+
+- **Timestamp:** 00:02
+
+- ![Screenshot](00_02_505.png)
+
+
+ So, we now have the bookinfo.app Gateway. End users who are coming to http://bookinfo.app will hit the Gateway. But where to go from there? How do we route traffic through this Gateway to our services? There are many different services. How can we specify that all traffic to the URL bookinfo.app slash productPage should go to the productPage service? The productPage service also serves static HTML/CSS and JavaScript content at the path /static. There is also a login, logout, and API path. All of this should route to the product page. All routing rules are configured through Virtual Services. Virtual Services define a set of routing rules for traffic coming from the Ingress Gateway into the Service Mesh. Virtual Services are flexible and powerful, with rich traffic routing options. You can specify traffic behavior for one or more hostnames, manage traffic within different versions of a service, standard and regex paths are supported. When a virtual service is created, Istio control plane applies the new configuration to all the Envoy sidecars.
+
+- **Timestamp:** 01:45
+
+- ![Screenshot](01_45_240.png)
+
+
+ So, let's create a Virtual Service to route these URLs to the productPage service. We create an object with the API version set to the networking.istio.io/v1-alpha-3 as of this recording. Note that this may change in later versions, so always refer to the Istio documentation while creating Virtual Services to get the latest supported API version. Kind is set to VirtualService, metadata has name set to bookinfo, and we have a spec section. First, we want to say that only traffic to the host bookinfo.app hits this Virtual Service, so we edit a host section. There may be multiple gateways configured. How do we associate this Virtual Service to the Gateway we created for our app? For that, we add a Gateway section and specify the name of the Gateway we created. That is, bookinfo-gateway. And finally, we have the HTTP section where we add our routing rules. The match section specifies URIs that should be matched. These are the URIs that we just discussed. Exact means the URI is matched as-is, and prefix are the URIs that start with the specified URI, such as /static/something or /api/v1/products/something. All of the traffic matching these URI patterns are then routed to the destination specified in the route section.
+
+- **Timestamp:** 03:47
+
+- ![Screenshot](03_47_216.png)
+
+
+ So, we now have a Virtual Service for product page. All traffic coming in through the bookinfo-gateway with the host name bookinfo.app now hits this Virtual Service.
+
+- **Timestamp:** 04:02
+
+- ![Screenshot](04_02_714.png)
+
+
+ Next, the product page needs to talk to the review service. At first, it only talks to the version 1. And later, we bring in versions 2 and 3. How do we gradually introduce the other versions, and only drive a small percentage of traffic to it and test them before driving all to it? Let's first look at how this works without Istio or Virtual Services on a plain Kubernetes cluster. So, in the beginning, we have the product page service talking to the reviews v1 service. We then came up with two new versions of the reviews service, version 2 and version 3. Version 2 has the black stars and version 3 has the red stars. We want to test these services by driving a small percentage of traffic to it until we are sure they work as expected and that our users like the new star feature. In the plain Kubernetes world, without Istio or a service mesh, we would deploy the reviews microservice as a deployment. Let's say it has three replicas, for example. This microservice is exposed within the cluster using a service type of ClusterIP. The labels app is set to the value of reviews, and that helps the service identify the pods as part of the reviews deployment. The service directs traffic to all the three Pods. The product page can now refer to the reviews service to get reviews of a book. As of now, 100% of traffic goes to the reviews v1.
+
+- **Timestamp:** 06:02
+
+- ![Screenshot](06_02_223.png)
+
+
+ When we deploy a new version of the reviews service, say version 2, we create it as a new deployment. But to begin with, we only deploy one pod because we don't want all users to go to that service. We use the same label though, a label called app with its value set to reviews. And, as such, the same service picks up the new pod, part of the new deployment. Now, the service has four endpoints. As such, 75% of traffic now goes to version 1, and 25% goes to v2.
+
+- **Timestamp:** 06:44
+
+- ![Screenshot](06_44_132.png)
+
+
+ Now with the third version of reviews, we deploy a new reviews application. This too has a single replica and the same labels. So the service now has a new pod added as an endpoint. And now with a new pod, 60% of traffic is routed to v1, 20% to v2, and 20% to v3.
+
+- **Timestamp:** 07:12
+
+- ![Screenshot](07_12_995.png)
+
+
+ So, let's say, for instance, we have identified v3, the one with the colored star, to be the winner as users like that the most. So, we decide to route all traffic to that version. For this, we first scale up the replicas of v3 to v3. So now we have an equal amount of traffic going to v1 and v3.
+
+- **Timestamp:** 07:40
+
+- ![Screenshot](07_40_274.png)
+
+
+ We then scale down the replicas on v1 and v2, and now we have 100% of traffic to v3.
+
+- **Timestamp:** 07:49
+
+- ![Screenshot](07_49_606.png)
+
+
+ We now have successfully run an A/B test to route traffic to the new versions, tested and identified the correct version to use, and then migrated to the new version of Review Service, all live, and without any downtime or disruption to service. This whole process is the native Kubernetes way of performing canary tests and controlling traffic between different versions of services. However, this has several challenges. Earlier, we had 100% of traffic going to v1, and when v2 was deployed, we had 75% going to v1 and 25% going to v2. What if we need more granularity in distributing traffic between versions? For example, what if we wanted to send just 1% of traffic to v2, so that the distribution is 99% to v1 and just 1% to v2? Since there are only 4 pods, and since the Kubernetes service distributes traffic across all of them equally, the distribution can only be 75% and 25%, not anything else. The only way to change the distribution percentage is to play around with the number of pods available in different services. So that's a limitation. With Istio and Virtual Services, we can now create a Virtual Service instead of a service, and we will call it reviews. We then define two destination rules for traffic distribution, subset v1 and v2. And we set a weight for each. 99% for one, and 1% for the other. Now, we can route 99% of traffic to one service, and 1% to the other. Even if the reviews v2 service had 3 or more pods, the traffic distribution would still be 99% to v1, and 1% to v2. The number of instances now has nothing to do with the traffic distribution, and we can easily control that through the Virtual Service configuration.
+
+- **Timestamp:** 10:32
+
+- ![Screenshot](10_32_660.png)
+
+
+ Now, you must be wondering what a subset is, and how it is configured. Well, hold on to that thought. For now, just think of it as a way of grouping multiple objects together using a label. Like how a regular Kubernetes service is. But not exactly. We will get to that in the upcoming sections.

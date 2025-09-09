@@ -1,0 +1,12 @@
+# 020-080-visualizing-service-mesh-with-kiali
+
+
+
+### Subtitles Extracted
+In this lecture, we will talk about Kiali. Once you have many microservices, it is important to observe them and check them to make sure they are available as you configured them. Kiali is a very common and powerful add-on used with Istio. It has a web-based graphical interface. It is a very helpful and fun tool for visualizing and managing the service mesh. For now, we will go over a high-level overview as it will help us visualize everything we will learn in the initial chapters. Later on, we will go into details of Kiali in the Observability chapter. Kiali is used for observing connections and microservices of Istio service mesh and also for defining and validating them. It visualizes the service mesh topology and provides visibility into features like request routing, circuit breaking, request rates, latency, and more. Kiali also offers wizards to apply common traffic patterns and automatically generates Istio configuration. After we install Kiali, we will also generate some test traffic to make sure we can see it on the Kiali dashboard.
+
+**Timestamp:** 01:32
+![Screenshot](01_32_196.png)
+
+Let's dive in and see how to install the add-on and view the Kiali dashboard.
+

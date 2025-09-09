@@ -1,0 +1,253 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:04.000
+Let's have a look at Gateways in Istio.
+
+2
+00:00:04.000 --> 00:00:09.000
+Now that we have deployed the application and set up a Service Mesh,
+
+3
+00:00:09.000 --> 00:00:14.000
+how can we make these services accessible to external users?
+
+4
+00:00:14.000 --> 00:00:19.000
+In our case, the page that users need to view is the product page.
+
+5
+00:00:19.000 --> 00:00:25.000
+How can we make the product page accessible to external users?
+
+6
+00:00:25.000 --> 00:00:32.000
+Our requirement is that if someone goes to the URL http://bookinfo.app,
+
+7
+00:00:32.000 --> 00:00:38.000
+they should view the product page with the details about all products.
+
+8
+00:00:38.000 --> 00:00:41.000
+How can we achieve this?
+
+9
+00:00:41.000 --> 00:00:46.000
+When we learn Kubernetes, we learn about Ingress.
+
+10
+00:00:46.000 --> 00:00:51.000
+Ingress controls traffic coming into the Kubernetes cluster.
+
+11
+00:00:51.000 --> 00:00:56.000
+We learn that it is implemented by deploying an Ingress controller,
+
+12
+00:00:56.000 --> 00:00:59.000
+such as an NGINX controller,
+
+13
+00:00:59.000 --> 00:01:06.000
+and by defining a set of routing rules that route the traffic to the appropriate service.
+
+14
+00:01:06.000 --> 00:01:12.000
+With Ingress, we could configure rules to say any traffic to the Kubernetes cluster
+
+15
+00:01:12.000 --> 00:01:22.000
+with the hostname set to the bookinfo.app should be directed to the product service.
+
+16
+00:01:22.000 --> 00:01:27.000
+So, here's a sample Ingress object that we could create to drive traffic
+
+17
+00:01:27.000 --> 00:01:32.000
+coming into the cluster at hostname bookinfo.app,
+
+18
+00:01:32.000 --> 00:01:37.000
+so they're routed to the product page service.
+
+19
+00:01:37.000 --> 00:01:40.000
+Now, this is Kubernetes Ingress.
+
+20
+00:01:40.000 --> 00:01:43.000
+While Istio supports Kubernetes Ingress,
+
+21
+00:01:43.000 --> 00:01:47.000
+there's also another approach that Istio offers and recommends
+
+22
+00:01:47.000 --> 00:01:54.000
+that supports more Istio features such as advanced monitoring and routing rules.
+
+23
+00:01:54.000 --> 00:01:58.000
+And that is called the Istio Gateway.
+
+24
+00:01:58.000 --> 00:02:05.000
+Gateways are load balancers that sit at the edge of the mesh.
+
+25
+00:02:05.000 --> 00:02:08.000
+They are the main configurations that manage the inbound
+
+26
+00:02:08.000 --> 00:02:13.000
+and the outbound traffic to the service mesh.
+
+27
+00:02:13.000 --> 00:02:19.000
+This is the recommended approach, such as compared to just using Kubernetes Ingress.
+
+28
+00:02:19.000 --> 00:02:24.000
+If you remember, we discussed earlier that when we deploy Istio on our cluster,
+
+29
+00:02:24.000 --> 00:02:29.000
+it deploys two additional components known as the Istio Ingress Gateway
+
+30
+00:02:29.000 --> 00:02:33.000
+and Istio Egress Gateway.
+
+31
+00:02:33.000 --> 00:02:36.000
+These are Istio Gateway controllers,
+
+32
+00:02:36.000 --> 00:02:41.000
+just like the Ingress controller that we talked about earlier.
+
+33
+00:02:41.000 --> 00:02:46.000
+The Ingress Gateway manages all inbound traffic to the services
+
+34
+00:02:46.000 --> 00:02:52.000
+and the Egress Gateway manages all outbound traffic from these services.
+
+35
+00:02:52.000 --> 00:02:58.000
+We discussed that Ingress is deployed in Kubernetes using controllers like NGINX.
+
+36
+00:02:58.000 --> 00:03:05.000
+Istio, on the other hand, deploys Ingress Gateways using Envoy proxies.
+
+37
+00:03:05.000 --> 00:03:11.000
+We have learned that all services have an Envoy proxy deployed as a sidecar container.
+
+38
+00:03:11.000 --> 00:03:17.000
+However, the Ingress and Egress gateways are just standalone Envoy proxies
+
+39
+00:03:17.000 --> 00:03:20.000
+sitting at the edge of the service mesh.
+
+40
+00:03:20.000 --> 00:03:23.000
+They do not work as a Sidecar.
+
+41
+00:03:23.000 --> 00:03:26.000
+These are the default Gateway controllers that were deployed
+
+42
+00:03:26.000 --> 00:03:29.000
+when Istio was deployed on the cluster.
+
+43
+00:03:29.000 --> 00:03:36.000
+However, we can have our own set of custom gateway controllers as well.
+
+44
+00:03:36.000 --> 00:03:43.000
+So, our goal here is to catch all traffic coming through this Istio Ingress Gateway controller
+
+45
+00:03:43.000 --> 00:03:50.000
+and route all traffic at hostname bookinfo.app to our product page.
+
+46
+00:03:50.000 --> 00:03:54.000
+For this, we first create a Gateway object.
+
+47
+00:03:56.000 --> 00:04:01.000
+So, here we create a Gateway object named bookinfo.gateway.
+
+48
+00:04:01.000 --> 00:04:06.000
+It serves all HTTP traffic at port 80 coming to the cluster through
+
+49
+00:04:06.000 --> 00:04:12.000
+the Istio Ingress Gateway controller with the hostname bookinfo.app.
+
+50
+00:04:12.000 --> 00:04:15.000
+But which Istio Ingress controller?
+
+51
+00:04:15.000 --> 00:04:17.000
+Here we have three controllers.
+
+52
+00:04:17.000 --> 00:04:20.000
+The two custom ones we created.
+
+53
+00:04:21.000 --> 00:04:27.000
+For this, add a selector and specify the label of the desired controller.
+
+54
+00:04:27.000 --> 00:04:32.000
+In our case, we want to use the default Istio Ingress Gateway controller,
+
+55
+00:04:32.000 --> 00:04:36.000
+so we set the selector Ingress Gateway.
+
+56
+00:04:36.000 --> 00:04:40.000
+And we ignore the two custom ones we created.
+
+57
+00:04:40.000 --> 00:04:45.000
+We then create the bookinfo Gateway by applying this configuration.
+
+58
+00:04:46.000 --> 00:04:53.000
+To list the created Gateways, run the kubectl get-gateway command.
+
+59
+00:04:53.000 --> 00:05:01.000
+And to view details about a particular Gateway, run the kubectl describe-gateway command.
+
+60
+00:05:01.000 --> 00:05:08.000
+So, we now have a bookinfo Gateway object created to capture traffic coming through
+
+61
+00:05:08.000 --> 00:05:15.000
+the default Istio Ingress Gateway controller through the URL bookinfo.app.
+
+62
+00:05:15.000 --> 00:05:19.000
+But how and where is that traffic routed to?
+
+63
+00:05:19.000 --> 00:05:24.000
+We will discuss that next when we talk about Virtual Services.

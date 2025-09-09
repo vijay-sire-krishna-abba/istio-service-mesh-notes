@@ -1,0 +1,917 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:05.000
+Let us now learn about Virtual Services and Istio.
+
+2
+00:00:07.000 --> 00:00:11.000
+So, we now have the bookinfo.app Gateway.
+
+3
+00:00:12.000 --> 00:00:18.000
+End users who are coming to http://bookinfo.app will hit the Gateway.
+
+4
+00:00:19.000 --> 00:00:21.000
+But where to go from there?
+
+5
+00:00:22.000 --> 00:00:26.000
+How do we route traffic through this Gateway to our services?
+
+6
+00:00:27.000 --> 00:00:29.000
+There are many different services.
+
+7
+00:00:30.000 --> 00:00:35.000
+How can we specify that all traffic to the URL bookinfo.app
+
+8
+00:00:35.000 --> 00:00:39.000
+slash productPage should go to the productPage service?
+
+9
+00:00:40.000 --> 00:00:45.000
+The productPage service also serves static HTML/CSS
+
+10
+00:00:45.000 --> 00:00:49.000
+and JavaScript content at the path /static.
+
+11
+00:00:51.000 --> 00:00:55.000
+There is also a login, logout, and API path.
+
+12
+00:00:56.000 --> 00:00:59.000
+All of this should route to the product page.
+
+13
+00:01:00.000 --> 00:01:05.000
+All routing rules are configured through Virtual Services.
+
+14
+00:01:06.000 --> 00:01:10.000
+Virtual Services define a set of routing rules for traffic
+
+15
+00:01:10.000 --> 00:01:14.000
+coming from the Ingress Gateway into the Service Mesh.
+
+16
+00:01:16.000 --> 00:01:20.000
+Virtual Services are flexible and powerful,
+
+17
+00:01:20.000 --> 00:01:23.000
+with rich traffic routing options.
+
+18
+00:01:24.000 --> 00:01:29.000
+You can specify traffic behavior for one or more hostnames,
+
+19
+00:01:29.000 --> 00:01:32.000
+manage traffic within different versions of a service,
+
+20
+00:01:32.000 --> 00:01:36.000
+standard and regex paths are supported.
+
+21
+00:01:37.000 --> 00:01:39.000
+When a virtual service is created,
+
+22
+00:01:39.000 --> 00:01:43.000
+Istio control plane applies the new configuration
+
+23
+00:01:43.000 --> 00:01:46.000
+to all the Envoy sidecars.
+
+24
+00:01:48.000 --> 00:01:52.000
+So, let's create a Virtual Service to route these URLs
+
+25
+00:01:52.000 --> 00:01:54.000
+to the productPage service.
+
+26
+00:01:55.000 --> 00:01:58.000
+We create an object with the API version
+
+27
+00:01:58.000 --> 00:02:03.000
+set to the networking.istio.io/v1-alpha-3
+
+28
+00:02:03.000 --> 00:02:05.000
+as of this recording.
+
+29
+00:02:06.000 --> 00:02:09.000
+Note that this may change in later versions,
+
+30
+00:02:09.000 --> 00:02:13.000
+so always refer to the Istio documentation
+
+31
+00:02:13.000 --> 00:02:15.000
+while creating Virtual Services
+
+32
+00:02:15.000 --> 00:02:18.000
+to get the latest supported API version.
+
+33
+00:02:20.000 --> 00:02:23.000
+Kind is set to VirtualService,
+
+34
+00:02:23.000 --> 00:02:27.000
+metadata has name set to bookinfo,
+
+35
+00:02:27.000 --> 00:02:29.000
+and we have a spec section.
+
+36
+00:02:32.000 --> 00:02:34.000
+First, we want to say that
+
+37
+00:02:34.000 --> 00:02:37.000
+only traffic to the host bookinfo.app
+
+38
+00:02:37.000 --> 00:02:39.000
+hits this Virtual Service,
+
+39
+00:02:39.000 --> 00:02:42.000
+so we edit a host section.
+
+40
+00:02:43.000 --> 00:02:46.000
+There may be multiple gateways configured.
+
+41
+00:02:46.000 --> 00:02:49.000
+How do we associate this Virtual Service
+
+42
+00:02:49.000 --> 00:02:52.000
+to the Gateway we created for our app?
+
+43
+00:02:53.000 --> 00:02:56.000
+For that, we add a Gateway section
+
+44
+00:02:56.000 --> 00:02:59.000
+and specify the name of the Gateway we created.
+
+45
+00:03:00.000 --> 00:03:03.000
+That is, bookinfo-gateway.
+
+46
+00:03:04.000 --> 00:03:07.000
+And finally, we have the HTTP section
+
+47
+00:03:07.000 --> 00:03:10.000
+where we add our routing rules.
+
+48
+00:03:12.000 --> 00:03:15.000
+The match section specifies URIs
+
+49
+00:03:15.000 --> 00:03:17.000
+that should be matched.
+
+50
+00:03:17.000 --> 00:03:20.000
+These are the URIs that we just discussed.
+
+51
+00:03:21.000 --> 00:03:25.000
+Exact means the URI is matched as-is,
+
+52
+00:03:25.000 --> 00:03:28.000
+and prefix are the URIs that start
+
+53
+00:03:28.000 --> 00:03:30.000
+with the specified URI,
+
+54
+00:03:30.000 --> 00:03:33.000
+such as /static/something
+
+55
+00:03:33.000 --> 00:03:39.000
+or /api/v1/products/something.
+
+56
+00:03:40.000 --> 00:03:44.000
+All of the traffic matching these URI patterns
+
+57
+00:03:44.000 --> 00:03:46.000
+are then routed to the destination
+
+58
+00:03:46.000 --> 00:03:48.000
+specified in the route section.
+
+59
+00:03:49.000 --> 00:03:52.000
+So, we now have a Virtual Service
+
+60
+00:03:52.000 --> 00:03:54.000
+for product page.
+
+61
+00:03:54.000 --> 00:03:56.000
+All traffic coming in
+
+62
+00:03:56.000 --> 00:03:58.000
+through the bookinfo-gateway
+
+63
+00:03:58.000 --> 00:04:01.000
+with the host name bookinfo.app
+
+64
+00:04:01.000 --> 00:04:03.000
+now hits this Virtual Service.
+
+65
+00:04:04.000 --> 00:04:07.000
+Next, the product page needs to
+
+66
+00:04:07.000 --> 00:04:09.000
+talk to the review service.
+
+67
+00:04:11.000 --> 00:04:14.000
+At first, it only talks to the version 1.
+
+68
+00:04:15.000 --> 00:04:19.000
+And later, we bring in versions 2 and 3.
+
+69
+00:04:19.000 --> 00:04:21.000
+How do we gradually introduce
+
+70
+00:04:21.000 --> 00:04:23.000
+the other versions,
+
+71
+00:04:23.000 --> 00:04:25.000
+and only drive a small percentage
+
+72
+00:04:25.000 --> 00:04:27.000
+of traffic to it and test them
+
+73
+00:04:27.000 --> 00:04:29.000
+before driving all to it?
+
+74
+00:04:31.000 --> 00:04:33.000
+Let's first look at how this works
+
+75
+00:04:33.000 --> 00:04:36.000
+without Istio or Virtual Services
+
+76
+00:04:36.000 --> 00:04:38.000
+on a plain Kubernetes cluster.
+
+77
+00:04:39.000 --> 00:04:41.000
+So, in the beginning,
+
+78
+00:04:41.000 --> 00:04:43.000
+we have the product page service
+
+79
+00:04:43.000 --> 00:04:45.000
+talking to the reviews v1 service.
+
+80
+00:04:46.000 --> 00:04:48.000
+We then came up with
+
+81
+00:04:48.000 --> 00:04:51.000
+two new versions of the reviews service,
+
+82
+00:04:51.000 --> 00:04:54.000
+version 2 and version 3.
+
+83
+00:04:55.000 --> 00:04:57.000
+Version 2 has the black stars
+
+84
+00:04:57.000 --> 00:05:00.000
+and version 3 has the red stars.
+
+85
+00:05:01.000 --> 00:05:03.000
+We want to test these services
+
+86
+00:05:03.000 --> 00:05:05.000
+by driving a small percentage
+
+87
+00:05:05.000 --> 00:05:07.000
+of traffic to it until we are sure
+
+88
+00:05:07.000 --> 00:05:09.000
+they work as expected
+
+89
+00:05:09.000 --> 00:05:11.000
+and that our users like
+
+90
+00:05:11.000 --> 00:05:13.000
+the new star feature.
+
+91
+00:05:14.000 --> 00:05:16.000
+In the plain Kubernetes world,
+
+92
+00:05:16.000 --> 00:05:19.000
+without Istio or a service mesh,
+
+93
+00:05:19.000 --> 00:05:21.000
+we would deploy the reviews microservice
+
+94
+00:05:21.000 --> 00:05:23.000
+as a deployment.
+
+95
+00:05:24.000 --> 00:05:26.000
+Let's say it has three replicas,
+
+96
+00:05:26.000 --> 00:05:27.000
+for example.
+
+97
+00:05:27.000 --> 00:05:29.000
+This microservice is exposed
+
+98
+00:05:29.000 --> 00:05:31.000
+within the cluster
+
+99
+00:05:31.000 --> 00:05:34.000
+using a service type of ClusterIP.
+
+100
+00:05:35.000 --> 00:05:37.000
+The labels app is set
+
+101
+00:05:37.000 --> 00:05:39.000
+to the value of reviews,
+
+102
+00:05:39.000 --> 00:05:41.000
+and that helps the service
+
+103
+00:05:41.000 --> 00:05:43.000
+identify the pods
+
+104
+00:05:43.000 --> 00:05:45.000
+as part of the reviews deployment.
+
+105
+00:05:46.000 --> 00:05:48.000
+The service directs traffic
+
+106
+00:05:48.000 --> 00:05:50.000
+to all the three Pods.
+
+107
+00:05:50.000 --> 00:05:52.000
+The product page can now
+
+108
+00:05:52.000 --> 00:05:54.000
+refer to the reviews service
+
+109
+00:05:54.000 --> 00:05:56.000
+to get reviews of a book.
+
+110
+00:05:57.000 --> 00:05:58.000
+As of now,
+
+111
+00:05:58.000 --> 00:06:00.000
+100% of traffic
+
+112
+00:06:00.000 --> 00:06:03.000
+goes to the reviews v1.
+
+113
+00:06:04.000 --> 00:06:06.000
+When we deploy a new version
+
+114
+00:06:06.000 --> 00:06:08.000
+of the reviews service,
+
+115
+00:06:08.000 --> 00:06:10.000
+say version 2,
+
+116
+00:06:10.000 --> 00:06:13.000
+we create it as a new deployment.
+
+117
+00:06:15.000 --> 00:06:16.000
+But to begin with,
+
+118
+00:06:16.000 --> 00:06:18.000
+we only deploy one pod
+
+119
+00:06:18.000 --> 00:06:20.000
+because we don't want all users
+
+120
+00:06:20.000 --> 00:06:22.000
+to go to that service.
+
+121
+00:06:22.000 --> 00:06:24.000
+We use the same label though,
+
+122
+00:06:24.000 --> 00:06:26.000
+a label called app
+
+123
+00:06:26.000 --> 00:06:29.000
+with its value set to reviews.
+
+124
+00:06:29.000 --> 00:06:31.000
+And, as such,
+
+125
+00:06:31.000 --> 00:06:33.000
+the same service picks up the new pod,
+
+126
+00:06:33.000 --> 00:06:35.000
+part of the new deployment.
+
+127
+00:06:36.000 --> 00:06:39.000
+Now, the service has four endpoints.
+
+128
+00:06:39.000 --> 00:06:42.000
+As such, 75% of traffic
+
+129
+00:06:42.000 --> 00:06:44.000
+now goes to version 1,
+
+130
+00:06:44.000 --> 00:06:47.000
+and 25% goes to v2.
+
+131
+00:06:48.000 --> 00:06:51.000
+Now with the third version of reviews,
+
+132
+00:06:51.000 --> 00:06:54.000
+we deploy a new reviews application.
+
+133
+00:06:54.000 --> 00:06:56.000
+This too has a single replica
+
+134
+00:06:56.000 --> 00:06:58.000
+and the same labels.
+
+135
+00:06:58.000 --> 00:07:01.000
+So the service now has a new pod
+
+136
+00:07:01.000 --> 00:07:03.000
+added as an endpoint.
+
+137
+00:07:03.000 --> 00:07:05.000
+And now with a new pod,
+
+138
+00:07:05.000 --> 00:07:08.000
+60% of traffic is routed to v1,
+
+139
+00:07:08.000 --> 00:07:11.000
+20% to v2,
+
+140
+00:07:11.000 --> 00:07:14.000
+and 20% to v3.
+
+141
+00:07:14.000 --> 00:07:16.000
+So, let's say, for instance,
+
+142
+00:07:16.000 --> 00:07:19.000
+we have identified v3,
+
+143
+00:07:19.000 --> 00:07:21.000
+the one with the colored star,
+
+144
+00:07:21.000 --> 00:07:23.000
+to be the winner as users
+
+145
+00:07:23.000 --> 00:07:25.000
+like that the most.
+
+146
+00:07:25.000 --> 00:07:27.000
+So, we decide to route
+
+147
+00:07:27.000 --> 00:07:29.000
+all traffic to that version.
+
+148
+00:07:29.000 --> 00:07:31.000
+For this,
+
+149
+00:07:31.000 --> 00:07:33.000
+we first scale up the replicas
+
+150
+00:07:33.000 --> 00:07:35.000
+of v3 to v3.
+
+151
+00:07:35.000 --> 00:07:37.000
+So now we have an equal amount
+
+152
+00:07:37.000 --> 00:07:41.000
+of traffic going to v1 and v3.
+
+153
+00:07:41.000 --> 00:07:43.000
+We then scale down the replicas
+
+154
+00:07:43.000 --> 00:07:45.000
+on v1 and v2,
+
+155
+00:07:45.000 --> 00:07:47.000
+and now we have
+
+156
+00:07:47.000 --> 00:07:50.000
+100% of traffic to v3.
+
+157
+00:07:51.000 --> 00:07:54.000
+We now have successfully run
+
+158
+00:07:54.000 --> 00:07:56.000
+an A/B test
+
+159
+00:07:56.000 --> 00:07:59.000
+to route traffic to the new versions,
+
+160
+00:07:59.000 --> 00:08:01.000
+tested and identified
+
+161
+00:08:01.000 --> 00:08:03.000
+the correct version to use,
+
+162
+00:08:03.000 --> 00:08:05.000
+and then migrated to the new version
+
+163
+00:08:05.000 --> 00:08:07.000
+of RevueService, all live,
+
+164
+00:08:07.000 --> 00:08:09.000
+and without any downtime
+
+165
+00:08:09.000 --> 00:08:12.000
+or disruption to service.
+
+166
+00:08:14.000 --> 00:08:16.000
+This whole process is the native Kubernetes
+
+167
+00:08:16.000 --> 00:08:18.000
+way of performing canary tests
+
+168
+00:08:18.000 --> 00:08:20.000
+and controlling traffic
+
+169
+00:08:20.000 --> 00:08:23.000
+between different versions of services.
+
+170
+00:08:23.000 --> 00:08:27.000
+However, this has several challenges.
+
+171
+00:08:27.000 --> 00:08:30.000
+Earlier, we had 100% of traffic
+
+172
+00:08:30.000 --> 00:08:32.000
+going to v1,
+
+173
+00:08:32.000 --> 00:08:35.000
+and when v2 was deployed,
+
+174
+00:08:35.000 --> 00:08:38.000
+we had 75% going to v1
+
+175
+00:08:38.000 --> 00:08:41.000
+and 25% going to v2.
+
+176
+00:08:41.000 --> 00:08:44.000
+What if we need more granularity
+
+177
+00:08:44.000 --> 00:08:46.000
+in distributing traffic
+
+178
+00:08:46.000 --> 00:08:48.000
+between versions?
+
+179
+00:08:48.000 --> 00:08:50.000
+For example, what if we wanted
+
+180
+00:08:50.000 --> 00:08:53.000
+to send just 1% of traffic
+
+181
+00:08:53.000 --> 00:08:55.000
+to v2,
+
+182
+00:08:55.000 --> 00:08:58.000
+so that the distribution is 99%
+
+183
+00:08:58.000 --> 00:09:01.000
+to v1 and just 1%
+
+184
+00:09:01.000 --> 00:09:03.000
+to v2?
+
+185
+00:09:04.000 --> 00:09:06.000
+Since there are only 4 pods,
+
+186
+00:09:06.000 --> 00:09:09.000
+and since the Kubernetes service
+
+187
+00:09:09.000 --> 00:09:11.000
+distributes traffic across
+
+188
+00:09:11.000 --> 00:09:13.000
+all of them equally,
+
+189
+00:09:13.000 --> 00:09:15.000
+the distribution can only be
+
+190
+00:09:15.000 --> 00:09:18.000
+75% and 25%,
+
+191
+00:09:18.000 --> 00:09:21.000
+not anything else.
+
+192
+00:09:22.000 --> 00:09:24.000
+The only way to change the distribution
+
+193
+00:09:24.000 --> 00:09:26.000
+percentage is to play around
+
+194
+00:09:26.000 --> 00:09:28.000
+with the number of pods available
+
+195
+00:09:28.000 --> 00:09:31.000
+in different services.
+
+196
+00:09:31.000 --> 00:09:34.000
+So that's a limitation.
+
+197
+00:09:34.000 --> 00:09:36.000
+With Istio and Virtual Services,
+
+198
+00:09:36.000 --> 00:09:39.000
+we can now create a Virtual Service
+
+199
+00:09:39.000 --> 00:09:41.000
+instead of a service,
+
+200
+00:09:41.000 --> 00:09:44.000
+and we will call it reviews.
+
+201
+00:09:44.000 --> 00:09:46.000
+We then define two destination rules
+
+202
+00:09:46.000 --> 00:09:48.000
+for traffic distribution,
+
+203
+00:09:48.000 --> 00:09:51.000
+subset v1 and v2.
+
+204
+00:09:52.000 --> 00:09:55.000
+And we set a weight for each.
+
+205
+00:09:55.000 --> 00:09:58.000
+99% for one,
+
+206
+00:09:58.000 --> 00:10:01.000
+and 1% for the other.
+
+207
+00:10:01.000 --> 00:10:04.000
+Now, we can route 99% of traffic
+
+208
+00:10:04.000 --> 00:10:06.000
+to one service,
+
+209
+00:10:06.000 --> 00:10:09.000
+and 1% to the other.
+
+210
+00:10:09.000 --> 00:10:12.000
+Even if the reviews v2 service
+
+211
+00:10:12.000 --> 00:10:14.000
+had 3 or more pods,
+
+212
+00:10:14.000 --> 00:10:17.000
+the traffic distribution would still be
+
+213
+00:10:17.000 --> 00:10:19.000
+99% to v1,
+
+214
+00:10:19.000 --> 00:10:23.000
+and 1% to v2.
+
+215
+00:10:23.000 --> 00:10:25.000
+The number of instances now
+
+216
+00:10:25.000 --> 00:10:27.000
+has nothing to do with the traffic
+
+217
+00:10:27.000 --> 00:10:29.000
+distribution, and we can easily
+
+218
+00:10:29.000 --> 00:10:31.000
+control that through the
+
+219
+00:10:31.000 --> 00:10:34.000
+Virtual Service configuration.
+
+220
+00:10:34.000 --> 00:10:36.000
+Now, you must be wondering
+
+221
+00:10:36.000 --> 00:10:37.000
+what a subset is,
+
+222
+00:10:37.000 --> 00:10:39.000
+and how it is configured.
+
+223
+00:10:39.000 --> 00:10:42.000
+Well, hold on to that thought.
+
+224
+00:10:42.000 --> 00:10:44.000
+For now, just think of it as a way
+
+225
+00:10:44.000 --> 00:10:47.000
+of grouping multiple objects together
+
+226
+00:10:47.000 --> 00:10:49.000
+using a label.
+
+227
+00:10:49.000 --> 00:10:52.000
+Like how a regular Kubernetes service is.
+
+228
+00:10:52.000 --> 00:10:54.000
+But not exactly.
+
+229
+00:10:54.000 --> 00:10:57.000
+We will get to that in the upcoming sections.

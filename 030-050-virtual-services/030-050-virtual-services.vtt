@@ -1,0 +1,365 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:09.000
+For this demo, first we'll change the weight of our reviews application between its different versions.
+
+2
+00:00:09.000 --> 00:00:16.000
+Then, we'll create some routing rules so that different users will see different versions of our application.
+
+3
+00:00:16.000 --> 00:00:25.000
+To be able to change the weight of traffic between different versions of an app, first we need to define those versions.
+
+4
+00:00:26.000 --> 00:00:31.000
+This can be done by using Destination Rules, as we've talked earlier.
+
+5
+00:00:31.000 --> 00:00:37.000
+For this demo, we can use the default Destination Rules from our Samples folder.
+
+6
+00:00:37.000 --> 00:00:40.000
+Then, let's create our Virtual Service.
+
+7
+00:00:40.000 --> 00:00:47.000
+This virtual service will be named Revu's, and it will be affecting Revu's host.
+
+8
+00:00:47.000 --> 00:00:53.000
+Under the HTTP route section, we have created two different destinations.
+
+9
+00:00:53.000 --> 00:00:58.000
+First is for subset v1, that is defined by a Destination Rule.
+
+10
+00:00:58.000 --> 00:01:04.000
+Second is for subset v2, and that is also defined by a Destination Rule.
+
+11
+00:01:04.000 --> 00:01:10.000
+And you can see, there's a weight distribution by 75 to 25 here.
+
+12
+00:01:10.000 --> 00:01:16.000
+These numbers always need to be 100 when summed up.
+
+13
+00:01:16.000 --> 00:01:21.000
+We can apply this YAML now.
+
+14
+00:01:21.000 --> 00:01:28.000
+Let's check with Analyze if it's all good.
+
+15
+00:01:28.000 --> 00:01:30.000
+Yes, it's all looking good.
+
+16
+00:01:30.000 --> 00:01:37.000
+Now, let's create some traffic to our application to see how this change in weight will affect it.
+
+17
+00:01:37.000 --> 00:01:43.000
+Switching back to Kiali for that, we can check the Istio configs.
+
+18
+00:01:43.000 --> 00:01:47.000
+Here are the Destination Rules we created from the Samples folder.
+
+19
+00:01:47.000 --> 00:01:53.000
+As you can see, there are three different subsets that will be matched by the services' labels,
+
+20
+00:01:53.000 --> 00:01:57.000
+version v1, v2, and v3.
+
+21
+00:01:57.000 --> 00:02:01.000
+Let's check out Revu's Virtual Service.
+
+22
+00:02:01.000 --> 00:02:05.000
+You can see the weight distribution in this bar on the right.
+
+23
+00:02:05.000 --> 00:02:09.000
+Now, let's see the graph.
+
+24
+00:02:09.000 --> 00:02:20.000
+As you can see, the weight of all Review service is distributed between v1 and v2.
+
+25
+00:02:20.000 --> 00:02:28.000
+When we go to the app, it shows that there is only a no star and a black star version.
+
+26
+00:02:28.000 --> 00:02:33.000
+Red star version is v3, and it is not there.
+
+27
+00:02:33.000 --> 00:02:45.000
+Now, let's stop the loop that we have the traffic coming from and try to feel the 75-25% difference in the browser.
+
+28
+00:02:45.000 --> 00:02:50.000
+As you can see, v1 is more prominent than v2.
+
+29
+00:02:50.000 --> 00:02:59.000
+I've just stopped the other traffic source, so the balance might not be very clear right now, but you can see the difference.
+
+30
+00:02:59.000 --> 00:03:07.000
+Now, let's change our weight distribution once more, but this time we'll do this using the Kiali interface.
+
+31
+00:03:07.000 --> 00:03:17.000
+This time, I'm adding another destination, but I'm not changing any weights, so it will be 125 in total.
+
+32
+00:03:17.000 --> 00:03:21.000
+Let's see how it will go.
+
+33
+00:03:21.000 --> 00:03:30.000
+As you can see, Kiali interface did not let me save this, and it has given me a proper error on the x at the top.
+
+34
+00:03:30.000 --> 00:03:33.000
+Let's fix this weight distribution.
+
+35
+00:03:33.000 --> 00:03:38.000
+And also, I want another subset, v3, here.
+
+36
+00:03:38.000 --> 00:03:51.000
+So, as you can see, first we had only two versions of reviews, and we now, even for a small percentage of requests, introduced another version of it.
+
+37
+00:03:51.000 --> 00:04:03.000
+We can check it in the browser, and it is not common, but we've started to see some red stars in some of the requests.
+
+38
+00:04:03.000 --> 00:04:08.000
+Let's go back to the terminal and create some heavy traffic here.
+
+39
+00:04:08.000 --> 00:04:13.000
+As you can see, v3 is also in our graph now.
+
+40
+00:04:13.000 --> 00:04:33.000
+There are different graph versions here, some show them grouped as services, some show them grouped as workloads.
+
+41
+00:04:33.000 --> 00:04:37.000
+Let's check Istio Virtual Services config.
+
+42
+00:04:37.000 --> 00:04:41.000
+Here on the right, you can see the new weight distribution.
+
+43
+00:04:41.000 --> 00:04:46.000
+If you click hosts, you can also see the overview of the hosts.
+
+44
+00:04:46.000 --> 00:04:53.000
+Well, in this detailed graph, it will give us some more information about weight distribution.
+
+45
+00:04:53.000 --> 00:05:05.000
+As you can see, reviews version 1 traffic is almost three times more than version 2 and version 3, as we've configured it.
+
+46
+00:05:05.000 --> 00:05:09.000
+Now, let's try the example we used in the lecture.
+
+47
+00:05:09.000 --> 00:05:15.000
+Let's try to distribute traffic by 99% to 1%.
+
+48
+00:05:15.000 --> 00:05:18.000
+Yes, version 1 and version 2 okay.
+
+49
+00:05:18.000 --> 00:05:22.000
+We can remove version 3.
+
+50
+00:05:22.000 --> 00:05:33.000
+This probably will take some time.
+
+51
+00:05:33.000 --> 00:05:42.000
+Okay, we've waited a bit, and as you can see, the weight of reviews version 1 traffic has changed drastically.
+
+52
+00:05:42.000 --> 00:05:46.000
+And it will probably change some more over time.
+
+53
+00:05:46.000 --> 00:05:53.000
+And also in the browser, we cannot see the second version, almost at all.
+
+54
+00:05:53.000 --> 00:05:57.000
+Ah, there it is.
+
+55
+00:05:57.000 --> 00:06:00.000
+Now, let's do another example.
+
+56
+00:06:00.000 --> 00:06:03.000
+Let's remove the other destination.
+
+57
+00:06:03.000 --> 00:06:09.000
+We want some of our users to see some specific versions of our app.
+
+58
+00:06:09.000 --> 00:06:19.000
+For example, our product owner might have said, everyone has a non-star version, but for a special user group called KodeKloud,
+
+59
+00:06:19.000 --> 00:06:27.000
+they want to release a starred version of our app, which is a very nice and rich feature.
+
+60
+00:06:27.000 --> 00:06:38.000
+And let's add a new section under HTTP for that, called match.
+
+61
+00:06:38.000 --> 00:06:49.000
+When KodeKloud user signs in, they'll see the black star version, and the rest of the users will see the regular one.
+
+62
+00:06:49.000 --> 00:06:52.000
+To do that, we'll now add a rule.
+
+63
+00:06:52.000 --> 00:07:03.000
+This rule will pick the requests that have end user in the request header, and it will check if it's matching exactly with KodeKloud.
+
+64
+00:07:03.000 --> 00:07:10.000
+If a request passes this rule, it will be routed to reviews version 2.
+
+65
+00:07:10.000 --> 00:07:16.000
+And the rest will be routed to reviews version 1.
+
+66
+00:07:16.000 --> 00:07:24.000
+But how do we create a request that has KodeKloud end user in the request header?
+
+67
+00:07:24.000 --> 00:07:29.000
+Don't worry about it. We have a feature in our application.
+
+68
+00:07:29.000 --> 00:07:33.000
+See the tiny sign-in button on the top?
+
+69
+00:07:33.000 --> 00:07:37.000
+That's for adding an end user header to the request.
+
+70
+00:07:37.000 --> 00:07:43.000
+We'll just type our username and write a random password, then sign in.
+
+71
+00:07:43.000 --> 00:07:48.000
+There's actually nothing this app does in terms of checking this user.
+
+72
+00:07:48.000 --> 00:07:52.000
+It is just for experimenting with request headers.
+
+73
+00:07:52.000 --> 00:07:59.000
+Once you sign in, you'll see the reviews version has changed to version 2.
+
+74
+00:07:59.000 --> 00:08:04.000
+And it is not related to a weight distribution rule at all.
+
+75
+00:08:04.000 --> 00:08:08.000
+I keep refreshing, but the page is still the same.
+
+76
+00:08:08.000 --> 00:08:15.000
+However, when I sign out, it changes back to version 1, just as we configured it to do.
+
+77
+00:08:15.000 --> 00:08:18.000
+Now, we are happy with this.
+
+78
+00:08:18.000 --> 00:08:24.000
+But we also want to introduce a new version for a specific group of people,
+
+79
+00:08:24.000 --> 00:08:29.000
+and we want them to test it, and they can even give us some feedback.
+
+80
+00:08:29.000 --> 00:08:33.000
+For this, let's create another match section.
+
+81
+00:08:34.000 --> 00:08:41.000
+And give a very secret name to these users as test users.
+
+82
+00:08:41.000 --> 00:08:48.000
+And route that traffic to our newest, very colorful version, version 3.
+
+83
+00:08:48.000 --> 00:08:55.000
+As you can see, the bar on the right shows both three routes are 100% in weight,
+
+84
+00:08:55.000 --> 00:08:59.000
+once they've matched our rules.
+
+85
+00:08:59.000 --> 00:09:04.000
+Now, let's try the default version without signing in.
+
+86
+00:09:04.000 --> 00:09:07.000
+Yes, it's a no-star version, version 1.
+
+87
+00:09:07.000 --> 00:09:12.000
+Let's try if our new version is available to test user.
+
+88
+00:09:16.000 --> 00:09:21.000
+It is working, and there is nothing else the test user can see.
+
+89
+00:09:21.000 --> 00:09:27.000
+And KodeKloud user is still seeing the Blackstar version with no problem at all.
+
+90
+00:09:29.000 --> 00:09:34.000
+Virtual Services are powerful, and as we've just experienced,
+
+91
+00:09:34.000 --> 00:09:38.000
+they can help you manage your traffic with much flexibility.

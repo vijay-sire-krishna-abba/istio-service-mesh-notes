@@ -1,0 +1,145 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:07.680
+So, in this demo, we'll deploy the Bookinfo application on our cluster, enable sidecar
+
+2
+00:00:07.680 --> 00:00:15.280
+injection to run our Envoy sidecars properly, and prepare our mesh for our first interaction
+
+3
+00:00:15.280 --> 00:00:16.280
+with it.
+
+4
+00:00:16.280 --> 00:00:23.000
+For this, we're going to use the Bookinfo app under the samples folder we downloaded
+
+5
+00:00:23.000 --> 00:00:24.480
+with Istio.
+
+6
+00:00:24.959 --> 00:00:30.559
+So, it's here in the platform directory, let's apply it with kubectl.
+
+7
+00:00:39.279 --> 00:00:46.000
+As you can see, each service has a service, service account, and deployment objects described
+
+8
+00:00:46.000 --> 00:00:47.599
+in this file.
+
+9
+00:00:47.599 --> 00:00:51.759
+You can even see the three different versions of previews deployed already.
+
+10
+00:00:54.560 --> 00:00:57.040
+Let's check the status of our pods.
+
+11
+00:01:00.560 --> 00:01:05.120
+So, they're all ready and running, which is nice.
+
+12
+00:01:05.120 --> 00:01:08.800
+This means our application must be running properly.
+
+13
+00:01:08.800 --> 00:01:12.239
+But do we have a service mesh in place?
+
+14
+00:01:12.239 --> 00:01:19.279
+Here, as you can see, there's only one container for each of our Pods, which is not a very
+
+15
+00:01:19.279 --> 00:01:21.040
+good sign.
+
+16
+00:01:21.040 --> 00:01:22.480
+Why could this be happening?
+
+17
+00:01:24.559 --> 00:01:29.519
+Let's use Istioctl analyze command here to check if there's anything wrong.
+
+18
+00:01:34.080 --> 00:01:38.000
+Oops, there's an info message about the default namespace here.
+
+19
+00:01:39.680 --> 00:01:44.720
+It says, default namespace is not enabled for Istio injection.
+
+20
+00:01:46.080 --> 00:01:53.760
+This is because we need to explicitly mark a namespace for injecting Istio sidecars into
+
+21
+00:01:53.760 --> 00:01:55.599
+the pods in that namespace.
+
+22
+00:01:57.599 --> 00:02:01.360
+Let's use this suggested approach here to label our namespace.
+
+23
+00:02:06.400 --> 00:02:08.080
+Yep, it is marked.
+
+24
+00:02:10.559 --> 00:02:15.199
+Now, to get this working, we need our Pods to be recreated.
+
+25
+00:02:15.919 --> 00:02:19.679
+A fast way to do that is to delete all our Deployments.
+
+26
+00:02:19.839 --> 00:02:23.440
+And create them with our initial YAML file.
+
+27
+00:02:25.440 --> 00:02:30.880
+Here, it has only created the missing ones, and the rest is not changed.
+
+28
+00:02:35.600 --> 00:02:38.240
+Now, let's check our pods once again.
+
+29
+00:02:39.919 --> 00:02:43.520
+Yes, they have sidecars injected to each one of them.
+
+30
+00:02:43.919 --> 00:02:49.600
+Here, an older deployment still has some pods in a terminating state, but it's just a matter
+
+31
+00:02:49.600 --> 00:02:51.279
+of time that it disappears.
+
+32
+00:02:52.320 --> 00:02:53.440
+And yes, it did.
+
+33
+00:02:55.679 --> 00:02:59.919
+Okay, so let's try Istioctl analyze command once again.
+
+34
+00:03:01.279 --> 00:03:08.000
+It is telling us, the command just analyzed the default namespace and found no issues regarding
+
+35
+00:03:08.000 --> 00:03:08.960
+Istio objects.
+
+36
+00:03:08.960 --> 00:03:13.360
+Congratulations, we now can start building our Service Mesh.

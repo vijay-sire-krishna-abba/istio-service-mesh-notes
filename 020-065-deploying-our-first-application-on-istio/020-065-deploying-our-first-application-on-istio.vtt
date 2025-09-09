@@ -1,0 +1,137 @@
+WEBVTT
+
+1
+00:00:01.000 --> 00:00:05.000
+Now to try Istio, let's deploy our application.
+
+2
+00:00:06.000 --> 00:00:11.000
+In the Samples folder we downloaded, you will find the Sample Bookinfo application.
+
+3
+00:00:12.000 --> 00:00:15.000
+To deploy it, please use this command.
+
+4
+00:00:16.000 --> 00:00:23.000
+If you have Istio samples somewhere else on your computer, you can also change this directory.
+
+5
+00:00:24.000 --> 00:00:31.000
+In the output that follows, you will see a number of deployments and services created.
+
+6
+00:00:32.000 --> 00:00:35.000
+Let's check the status of the pods deployed.
+
+7
+00:00:38.000 --> 00:00:50.000
+We see that we have a pod for the ProductPage microservice, the Details microservice, the Ratings service, and three different versions of the Review service.
+
+8
+00:00:51.000 --> 00:00:54.000
+We see that everything is deployed in the default namespace.
+
+9
+00:00:56.000 --> 00:01:05.000
+And now that we have Istio installed, we expect each pod to have the additional proxy container that we talked about.
+
+10
+00:01:06.000 --> 00:01:08.000
+However, that is not to be seen.
+
+11
+00:01:09.000 --> 00:01:15.000
+We can see that each pod only has a single container, as shown in the ready column here.
+
+12
+00:01:16.000 --> 00:01:17.000
+So why is that?
+
+13
+00:01:17.000 --> 00:01:24.000
+We can use the Istioctl analyze command to see why that may be the case.
+
+14
+00:01:25.000 --> 00:01:28.000
+It seems that we have a problem here.
+
+15
+00:01:29.000 --> 00:01:34.000
+The analysis tells us that Istio injection is not enabled.
+
+16
+00:01:35.000 --> 00:01:41.000
+What does it mean by namespace is not enabled for Istio injection?
+
+17
+00:01:42.000 --> 00:01:47.000
+You might be having multiple namespaces on your Kubernetes cluster.
+
+18
+00:01:48.000 --> 00:01:53.000
+KubeSystem being the namespace where all the core applications run.
+
+19
+00:01:54.000 --> 00:02:03.000
+And the default being the default namespace where applications are deployed when no namespace is specifically given.
+
+20
+00:02:04.000 --> 00:02:05.000
+As it is in our case.
+
+21
+00:02:05.000 --> 00:02:16.000
+There may be other applications running in other namespaces, such as HR or Payroll, etc.
+
+22
+00:02:17.000 --> 00:02:33.000
+You must explicitly enable Istio sidecar injection at a namespace level if you would like Istio to inject proxy services as sidecars to the applications deployed in a namespace.
+
+23
+00:02:34.000 --> 00:02:53.000
+For this, as given in the output of the command, you must run the kubectl label command to specify the namespace where you want to enable sidecar injection by setting the value of the label Istio injection to enable.
+
+24
+00:02:54.000 --> 00:03:04.000
+Similarly, if you'd like to explicitly disable Istio injection, then you must set this label to disabled using the same command.
+
+25
+00:03:05.000 --> 00:03:11.000
+We will now delete what we deployed so we can set the label and deploy it again.
+
+26
+00:03:12.000 --> 00:03:17.000
+Let's enable Istio sidecar injection in the default namespace.
+
+27
+00:03:18.000 --> 00:03:25.000
+Once this command is run, every new app in the default namespace will get a sidecar automatically.
+
+28
+00:03:28.000 --> 00:03:29.000
+Let's deploy our app again.
+
+29
+00:03:33.000 --> 00:03:36.000
+Let's check the status of our mesh now.
+
+30
+00:03:38.000 --> 00:03:41.000
+Let's check if we have Envoy sidecar proxies.
+
+31
+00:03:42.000 --> 00:03:44.000
+Yes, they're here and running.
+
+32
+00:03:45.000 --> 00:03:49.000
+Istio has now injected sidecar proxies into each pod.
+
+33
+00:03:50.000 --> 00:03:54.000
+You will explore more about these in the upcoming labs.
+
+34
+00:03:55.000 --> 00:03:58.000
+Well, that's it for now and I'll see you in the demo.

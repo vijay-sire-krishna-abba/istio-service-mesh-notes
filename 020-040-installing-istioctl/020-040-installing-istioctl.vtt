@@ -1,0 +1,177 @@
+WEBVTT
+
+1
+00:00:00.560 --> 00:00:04.640
+So, for this demo, you'll need Minikube installed on your machine.
+
+2
+00:00:05.600 --> 00:00:08.320
+First, let's create a cluster in Minikube.
+
+3
+00:00:11.040 --> 00:00:15.520
+If you use the start minikube command, Minikube will use the default driver.
+
+4
+00:00:16.080 --> 00:00:19.360
+As you can see, I also have Docker running in my system,
+
+5
+00:00:19.920 --> 00:00:22.559
+and I'm using Docker as my default driver.
+
+6
+00:00:23.680 --> 00:00:26.959
+If Minikube finds that you're running Docker on your local system,
+
+7
+00:00:27.520 --> 00:00:30.400
+it just lends itself as a container in Docker.
+
+8
+00:00:39.040 --> 00:00:42.639
+You might as well run into this issue, that says,
+
+9
+00:00:42.639 --> 00:00:48.240
+due to the networking limitations of Docker on Darwin, ingress add-on is not supported.
+
+10
+00:00:49.360 --> 00:00:55.599
+So, this bug is all about the ingress add-on not being supported on Docker driver on macOS
+
+11
+00:00:55.599 --> 00:00:58.560
+due to the limitation on Docker bridge for Mac.
+
+12
+00:00:59.759 --> 00:01:03.840
+By the time this training is released, the bug might be resolved,
+
+13
+00:01:03.840 --> 00:01:05.599
+and you might not encounter the issue.
+
+14
+00:01:06.639 --> 00:01:09.519
+But, if you did, here's a way to make it work.
+
+15
+00:01:11.120 --> 00:01:12.639
+Let's delete this cluster,
+
+16
+00:01:17.279 --> 00:01:18.639
+and use this command.
+
+17
+00:01:25.760 --> 00:01:29.360
+Now, you can use Minikube with a VM-based driver,
+
+18
+00:01:29.360 --> 00:01:33.680
+as it will not work on Docker; instead, it will work in a VM.
+
+19
+00:01:35.040 --> 00:01:36.639
+Let's try enabling ingress.
+
+20
+00:01:40.400 --> 00:01:42.639
+Yes, we see that it's enabled.
+
+21
+00:01:46.639 --> 00:01:51.440
+Now, with this command, we can run Minikube on a VM-based driver.
+
+22
+00:01:52.239 --> 00:01:56.239
+Now, with this command, we will install Istio control plane,
+
+23
+00:01:56.239 --> 00:01:58.879
+which we will use in this training a lot.
+
+24
+00:02:00.480 --> 00:02:06.080
+Be careful, this command will download the latest Istio release to the current directory,
+
+25
+00:02:06.080 --> 00:02:09.919
+so make sure you download it somewhere safe and reliable.
+
+26
+00:02:16.320 --> 00:02:20.320
+At the time of this recording, the latest release is already installed,
+
+27
+00:02:20.559 --> 00:02:27.679
+the latest release of Istio is 1.10.3, so this might be different in your case.
+
+28
+00:02:31.759 --> 00:02:34.720
+Now, move to the Istio package directory.
+
+29
+00:02:36.000 --> 00:02:40.080
+This directory is also named with the Istio version we downloaded.
+
+30
+00:02:41.679 --> 00:02:44.000
+Let's see what we got with the Istio package.
+
+31
+00:02:45.520 --> 00:02:48.000
+We have the license and README files.
+
+32
+00:02:48.800 --> 00:02:51.600
+There are lots of samples in the samples folder,
+
+33
+00:02:51.600 --> 00:02:55.440
+and Istio client binary is in /bin.
+
+34
+00:02:58.240 --> 00:03:04.000
+In the samples folder, we have our sample application that will be used throughout the course,
+
+35
+00:03:04.559 --> 00:03:07.279
+and also there are other interesting examples,
+
+36
+00:03:07.279 --> 00:03:11.039
+you can go search for more information in the Istio docs.
+
+37
+00:03:12.479 --> 00:03:16.399
+Let's see what's in the tools folder, nothing much.
+
+38
+00:03:18.639 --> 00:03:24.800
+Now with this command in Linux and macOS, we add the Istio control client to our path.
+
+39
+00:03:32.559 --> 00:03:35.360
+Let's check if Istio control plane is installed.
+
+40
+00:03:40.559 --> 00:03:45.839
+Yes, it is, and it is running in 1.10.3.
+
+41
+00:03:46.800 --> 00:03:52.000
+Now, using the Istio control plane, let's check if our cluster has Istio installed.
+
+42
+00:03:53.919 --> 00:03:57.360
+Hmm, well, that's because it does not.
+
+43
+00:03:57.360 --> 00:04:02.320
+As you can see, it is telling us there is no Istio control plane.
+
+44
+00:04:04.160 --> 00:04:06.960
+Let's install Istio on our cluster now.
