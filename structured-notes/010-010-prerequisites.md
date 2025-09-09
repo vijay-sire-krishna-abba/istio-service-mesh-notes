@@ -6,7 +6,7 @@
 Before diving into Istio and Service Mesh concepts, there are certain **prerequisites** that will help you fully understand and implement the lessons in this course.
 
 * **Timestamp:** 00:03
-* ![Screenshot](./010-010-Prerequisites/00_03_633.png)
+* ![Screenshot](../010-010-Prerequisites/00_03_633.png)
 
 ---
 
