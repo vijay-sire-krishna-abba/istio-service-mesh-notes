@@ -14,7 +14,7 @@ This presents a challenge:
 The solution is **Kubernetes Services**.
 
 * **Timestamp:** 00:04
-* ![Screenshot](../010-020-Kubernetes-Services/00_04_105.png)
+* ![Screenshot](../010-020-kubernetes-services/00_04_105.png)
 
 ---
 
@@ -49,7 +49,7 @@ This allows services to:
 2. **Load balance traffic** across multiple replicas.
 
 * **Timestamp:** 02:00
-* ![Screenshot](../010-020-Kubernetes-Services/02_00_711.png)
+* ![Screenshot](../010-020-kubernetes-services/02_00_711.png)
 
 ---
 
@@ -102,7 +102,7 @@ Kubernetes supports different **types of services** depending on how you want to
 
 * **Timestamp:** 03:18
 
-* ![Screenshot](../010-020-Kubernetes-Services/03_18_919.png)
+* ![Screenshot](../010-020-kubernetes-services/03_18_919.png)
 
 ---
 

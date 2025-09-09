@@ -6,7 +6,7 @@
 Before diving into Istio and Service Mesh concepts, there are certain **prerequisites** that will help you fully understand and implement the lessons in this course.
 
 * **Timestamp:** 00:03
-* ![Screenshot](../010-010-Prerequisites/00_03_633.png)
+* ![Screenshot](../010-010-prerequisites/00_03_633.png)
 
 ---
 
@@ -46,7 +46,7 @@ Even if you have prior Kubernetes experience, this course will **recap** some im
    * Core component of Istio’s **data plane**.
 
 * **Timestamp:** 00:54
-* ![Screenshot](../010-010-Prerequisites/00_54_303.png)
+* ![Screenshot](../010-010-prerequisites/00_54_303.png)
 
 ---
 

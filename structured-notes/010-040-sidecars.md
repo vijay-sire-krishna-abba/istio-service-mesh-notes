@@ -5,7 +5,7 @@
 ## Introduction to Sidecars
 
 * **Timestamp:** 00:05
-* ![Screenshot](../010-040-Sidecars/00_05_742.png)
+* ![Screenshot](../010-040-sidecars/00_05_742.png)
 
 In this course, you will often encounter the term **Sidecar**. To understand this, let’s first take a real-world analogy:
 
@@ -41,7 +41,7 @@ Similarly, in Kubernetes:
 ## Example: Sidecar Pod Definition
 
 * **Timestamp:** 01:26
-* ![Screenshot](../010-040-Sidecars/01_26_642.png)
+* ![Screenshot](../010-040-sidecars/01_26_642.png)
 
 Here’s an example `pod.yml` file that demonstrates a pod with a **main container** and a **sidecar container**:
 
@@ -89,7 +89,7 @@ This setup demonstrates how sidecars **support the main container without interf
 ## Transition
 
 * **Timestamp:** 01:52
-* ![Screenshot](../010-040-Sidecars/01_52_473.png)
+* ![Screenshot](../010-040-sidecars/01_52_473.png)
 
 Now that you understand **sidecars** and their role in Kubernetes, the next topic will introduce **Envoy**, which is the sidecar proxy used by Istio to handle service-to-service communication.
 
