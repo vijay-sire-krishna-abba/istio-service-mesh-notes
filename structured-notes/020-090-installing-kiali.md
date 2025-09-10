@@ -153,10 +153,10 @@ Shows all namespaces participating in the **service mesh**.
 ### 5.2 Applications
 
 * Clicking the application count displays all detected applications.
-* In this example, we see the **Bookinfo application’s four components** (productpage, details, ratings, reviews).
-
 **Timestamp:** 02:18
 ![Screenshot](../020-090-installing-kiali/02_18_189.png)
+
+* In this example, we see the **Bookinfo application’s four components** (productpage, details, ratings, reviews).
 **Timestamp:** 02:23
 ![Screenshot](../020-090-installing-kiali/02_23_916.png)
 
