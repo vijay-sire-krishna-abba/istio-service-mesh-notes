@@ -1,6 +1,5 @@
 
  ```
-t](
-t](../030-070-destination-rules/
+../030-070-destination-rules/
 ```
 
