@@ -195,7 +195,6 @@ kubectl scale deployment reviews-v3 --replicas=3
 ![Screenshot](/030-020-virtual-services/07_40_274.png)
 
 ```bash
-kubectl scale deployment reviews-v3 --replicas=3
 kubectl scale deployment reviews-v2 --replicas=0
 kubectl scale deployment reviews-v1 --replicas=0
 ```
